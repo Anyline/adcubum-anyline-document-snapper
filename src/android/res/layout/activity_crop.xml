@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CropDocumentActivity">
+
+
+
+    <ImageView
+        android:id="@+id/crop_activity_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_camera_alt_white_24dp"
+        android:layout_below="@layout/standart_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="@dimen/toolbarHeight"/>
+
+
+    <include layout="@layout/tetragon_view_layout"></include>
+
+    <io.anyline.adcubum.MagnifyImageView
+        android:id="@+id/crop_activity_magnify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:gravity="top|left"
+        android:background="@drawable/magnify"
+        android:layout_marginTop="@dimen/toolbarHeight"
+        />
+    <include layout="@layout/standart_toolbar" />
+
+
+
+</RelativeLayout>

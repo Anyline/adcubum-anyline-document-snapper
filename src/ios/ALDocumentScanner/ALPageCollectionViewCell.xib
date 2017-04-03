@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ALPageCollectionViewCellID" id="gTV-IL-0wX" customClass="ALPageCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="228" height="203"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="228" height="203"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vjV-Wc-8rZ">
+                        <rect key="frame" x="0.0" y="0.0" width="228" height="203"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="vjV-Wc-8rZ" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="2Vg-6g-Hzn"/>
+                <constraint firstAttribute="trailing" secondItem="vjV-Wc-8rZ" secondAttribute="trailing" id="Asc-4X-27N"/>
+                <constraint firstAttribute="bottom" secondItem="vjV-Wc-8rZ" secondAttribute="bottom" id="q9z-Ad-JPc"/>
+                <constraint firstItem="vjV-Wc-8rZ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="tA3-qF-2DK"/>
+            </constraints>
+            <size key="customSize" width="228" height="203"/>
+            <connections>
+                <outlet property="pageImageView" destination="vjV-Wc-8rZ" id="E04-gN-G3A"/>
+            </connections>
+            <point key="canvasLocation" x="533" y="287.5"/>
+        </collectionViewCell>
+    </objects>
+</document>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="scrabble_green">#327466</color>
+    <color name="anyline_blue_darker">#AA007ACC</color>
+    <color name="anyline_red">#AAE53F16</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="swiss_post_yellow">#FFCC01</color>
+    <color name="colorPrimary">#FFCC01</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="ci_yellow_primary">#FFCE00</color>
+    <color name="ci_yellow_secondary">#EF6C00</color>
+    <color name="bg_grey">#47494b</color>
+    <color name="polygonViewCircleBackground">#FFFFFF</color>
+    <color name="polygonViewCircleStrokeColor">#000000</color>
+    <color name="tetragon_corner_background">#FFFFFF</color>
+    <color name="tetragon_corner_stroke_color">#000000</color>
+    <color name="tetragon_edge_color">#3F51B5</color>
+    <color name="placeholder_image_preview_boarder">#000000</color>
+    <color name="placeholder_image_preview_background">#b7b5b5</color>
+    <color name="error_message_background">#996227E8</color>
+    <color name="error_message_highlight_background">#99f44336</color>
+    <color name="tetragon_edge_color_accent">#FF4081</color>
+    <color name="tetragon_area_color">#403F51B5</color>
+    <color name="tetragon_area_color_accent">#40FF4081</color>
+    <color name="placebholder_preview_background">#d3d3d3</color>
+    <color name="placebholder_preview_boarder">#d3d3d3</color>
+    <color name="icons">#000000</color>
+    <color name="bg_grey_disabled">#272829</color>
+</resources>

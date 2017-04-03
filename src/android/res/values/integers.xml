@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="error_message_delay">2000</integer>
+    <integer name="delay_after_successful_scan">2000</integer>
+</resources>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin
+        xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="io-anyline-adcubum"
+        version="0.1.0">
+
+    <name>AnylineSDK</name>
+
+    <platform name="ios">
+        <hook type="after_plugin_install" src="hooks/AfterPluginInstall.js"/>
+        <plugins-plist key="AnylineSDK" string="AnylineSDKPlugin"/>
+        <!-- feature tag in config.xml -->
+        <config-file parent="/widget" target="config.xml">
+            <feature name="AnylineSDK">
+                <param name="ios-package" value="AnylineSDKPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
+            <string>Yes we scan!</string>
+        </config-file>
+
+        <!-- Anyline SDK Cordova Plugin Source for iOS -->
+        <header-file src="src/ios/AnylineSDKPlugin.h"/>
+        <source-file src="src/ios/AnylineSDKPlugin.m"/>
+        <header-file src="src/ios/AnylineBaseScanViewController.h"/>
+        <source-file src="src/ios/AnylineBaseScanViewController.m"/>
+        <header-file src="src/ios/AnylineDocumentScanViewController.h"/>
+        <source-file src="src/ios/AnylineDocumentScanViewController.m"/>
+        <header-file src="src/ios/ALCordovaUIConfiguration.h"/>
+        <source-file src="src/ios/ALCordovaUIConfiguration.m"/>
+
+              <!-- Document Module Files for Multiplepage scanning -->
+<header-file src="src/ios/ALDocumentScanner/ALCroppingView.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALCroppingView.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALDocumentCropViewController.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALDocumentCropViewController.m" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/ALDocumentCropViewController.xib" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALDocumentOverviewToolBar.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALDocumentOverviewToolBar.m" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/ALDocumentOverviewToolBar.xib" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALDocumentOverviewViewController.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALDocumentOverviewViewController.m" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/ALDocumentOverviewViewController.xib" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALDocumentScanner.h" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALMagnifyingGlass.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALMagnifyingGlass.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALPageCollectionViewCell.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALPageCollectionViewCell.m" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/ALPageCollectionViewCell.xib" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALPagesCollectionViewLayout.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALPagesCollectionViewLayout.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALRectangleFeature.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALRectangleFeature.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALResultDocument.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALResultDocument.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALResultPage.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALResultPage.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALRoundedView.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALRoundedView.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALScannerToolBar.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/ALScannerToolBar.m" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/ALScannerToolBar.xib" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/ALScannerToolBarInterface.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/document_scanner_modified_config.json" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/add_file.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/add_file@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger@3x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/crop.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/crop@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/delete.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/delete@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_off.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_off@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_off@3x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_on.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_on@2x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/flash_on@3x.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/rotate.png" target-dir="ALDocumentScanner"/>
+<resource-file src="src/ios/ALDocumentScanner/Icons/rotate@2x.png" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/UIImage+Transformations.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/UIImage+Transformations.m" target-dir="ALDocumentScanner"/>
+<header-file src="src/ios/ALDocumentScanner/UIImageView+GeometryConversion.h" target-dir="ALDocumentScanner"/>
+<source-file src="src/ios/ALDocumentScanner/UIImageView+GeometryConversion.m" target-dir="ALDocumentScanner"/>
+<!--<source-file src="src/ios/de.lproj/Localizable.strings" target-dir="../../../de.lproj/"/>
+<source-file src="src/ios/en.lproj/Localizable.strings" target-dir="../../../en.lproj/"/>
+<source-file src="src/ios/es.lproj/Localizable.strings" target-dir="../../../es.lproj/"/>
+<source-file src="src/ios/fr.lproj/Localizable.strings" target-dir="../../../fr.lproj/"/>
+   -->
+     <!-- Anyline Framework & Resource Bundle -->
+        <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
+        <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>
+        <!-- Frameworks needed by Anyline SDK for iOS -->
+        <framework src="libz.tbd"/>
+        <framework src="libc++.tbd"/>
+        <framework src="AssetsLibrary.framework"/>
+        <framework src="Accelerate.framework"/>
+
+    </platform>
+    <platform name="android">
+        <!-- register plugin -->
+        <framework custom="true" src="src/android/anyline.gradle" type="gradleReference"/>
+
+        <config-file parent="/*" target="config.xml">
+            <feature name="AnylineSDK">
+                <param name="android-package" value="io.anyline.adcubum.AnylinePlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+        <!-- add permissions in AndroidManifest.xml file-->
+        <config-file mode="merge" parent="/manifest" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.CAMERA"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+        </config-file>
+        <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml" android:theme="@style/AppTheme" >
+
+            <activity
+                    android:name="io.anyline.adcubum.DocumentActivity"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:screenOrientation="portrait"/>
+            <activity
+                    android:name="io.anyline.adcubum.OverviewActivity"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:screenOrientation="portrait"/>
+            <activity
+                    android:name="io.anyline.adcubum.CropDocumentActivity"
+                    android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                    android:screenOrientation="portrait"/>
+        </config-file>
+
+        <!-- add plugin source code -->
+        <source-file src="src/android/io/anyline/adcubum/MagnifyImageView.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/AnylineBaseActivity.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/TetragonView.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/CropDocumentActivity.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/AnylinePlugin.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/DocumentActivity.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/CordovaUIConfig.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/Resources.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/OverviewActivity.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/PagerContainer.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/RecycleBin.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/RecyclingPagerAdapter.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/ScanPage.java" target-dir="src/io/anyline/adcubum"/>
+        <source-file src="src/android/io/anyline/adcubum/ScanPagePagerAdapter.java" target-dir="src/io/anyline/adcubum"/>
+
+        <source-file src="src/android/io/anyline/adcubum/util/FileUtil.java" target-dir="src/io/anyline/adcubum/util"/>
+        <source-file src="src/android/io/anyline/adcubum/util/MiscUtil.java" target-dir="src/io/anyline/adcubum/util"/>
+        <source-file src="src/android/io/anyline/adcubum/util/CameraUtil.java" target-dir="src/io/anyline/adcubum/util"/>
+        <source-file src="src/android/io/anyline/adcubum/util/PrefsUtil.java" target-dir="src/io/anyline/adcubum/util"/>
+        <source-file src="src/android/io/anyline/adcubum/util/TransformationUtil.java" target-dir="src/io/anyline/adcubum/util"/>
+
+        <resource-file src="src/android/res/values/dimens.xml" target="res/values/dimens.xml"/>
+        <resource-file src="src/android/res/values/colors.xml" target="res/values/colors.xml"/>
+        <resource-file src="src/android/res/values/integers.xml" target="res/values/integers.xml"/>
+        <resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml"/>
+
+        <resource-file src="src/android/res/values/strings.xml" target="res/values/strings.xml"/>
+        <resource-file src="src/android/res/values-de/strings.xml" target="res/values-de/strings.xml"/>
+        <resource-file src="src/android/res/values-fr/strings.xml" target="res/values-fr/strings.xml"/>
+        <resource-file src="src/android/res/values-es/strings.xml" target="res/values-es/strings.xml"/>
+
+        <resource-file src="src/android/res/layout/activity_scan_document.xml" target="res/layout/activity_scan_document.xml"/>
+        <resource-file src="src/android/res/layout/activity_main.xml" target="res/layout/activity_main.xml"/>
+        <resource-file src="src/android/res/layout/activity_crop.xml" target="res/layout/activity_crop.xml"/>
+        <resource-file src="src/android/res/layout/tetragon_view_layout.xml" target="res/layout/tetragon_view_layout.xml"/>
+        <resource-file src="src/android/res/layout/scan_page_layout.xml" target="res/layout/scan_page_layout.xml"/>
+        <resource-file src="src/android/res/layout/standart_toolbar.xml" target="res/layout/standart_toolbar.xml"/>
+
+        <resource-file src="src/android/res/menu/activity_crop_menu.xml" target="res/menu/activity_crop_menu.xml"/>
+        <resource-file src="src/android/res/menu/activity_main_menu.xml" target="res/menu/activity_main_menu.xml"/>
+        <resource-file src="src/android/res/menu/activity_scan_document_menu.xml" target="res/menu/activity_scan_document_menu.xml"/>
+
+        <resource-file src="src/android/res/drawable/button_background.xml" target="res/drawable/button_background.xml"/>
+        <resource-file src="src/android/res/drawable/circle.xml" target="res/drawable/circle.xml"/>
+        <resource-file src="src/android/res/drawable/error_message_background.xml" target="res/drawable/error_message_background.xml"/>
+        <resource-file src="src/android/res/drawable/ic_camera_alt_white_24dp.xml" target="res/drawable/ic_camera_alt_white_24dp.xml"/>
+        <resource-file src="src/android/res/drawable/magnify.xml" target="res/drawable/magnify.xml"/>
+        <resource-file src="src/android/res/drawable/placeholder_preview_image.xml" target="res/drawable/placeholder_preview_image.xml"/>
+        <resource-file src="src/android/res/drawable/round_button_background.xml" target="res/drawable/round_button_background.xml"/>
+        <resource-file src="src/android/res/drawable/scan_count_background.xml" target="res/drawable/scan_count_background.xml"/>
+        <resource-file src="src/android/res/drawable/ic_crop_black_24dp.png" target="res/drawable/ic_crop_black_24dp.png"/>
+        <resource-file src="src/android/res/drawable/ic_delete_black_24dp.png" target="res/drawable/ic_delete_black_24dp.png"/>
+        <resource-file src="src/android/res/drawable/ic_note_add_black_24dp.png" target="res/drawable/ic_note_add_black_24dp.png"/>
+        <resource-file src="src/android/res/drawable/ic_rotate_right_black_24dp.png" target="res/drawable/ic_rotate_right_black_24dp.png"/>
+
+
+<!--        <resource-file src="src/android/libs/anylinesdk-release-3.11.0-dev.aar" target="libs/anylinesdk-release-3.11.0-dev.aar"/> --> <!-- now via maven -->
+
+
+
+    </platform>
+</plugin>

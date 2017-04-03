@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/DEFAULT_PADDINGx2"
+    android:paddingBottom="@dimen/DEFAULT_PADDINGx2"
+    android:paddingLeft="@dimen/DEFAULT_PADDING"
+    android:paddingRight="@dimen/DEFAULT_PADDING"
+    android:layout_marginBottom="@dimen/DEFAULT_PADDING">
+
+    <ImageView
+        android:id="@+id/scanPageImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:background="@color/transparent"
+        tools:src="@drawable/ic_camera_alt_white_24dp"/>
+    <!-- IMPORTANT: scaleType does not matter here because Picasso will change this when loading the image -->
+
+</FrameLayout>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+ Anyline Cordova Plugin
+ indext.html
+
+ Copyright (c) 2016 Anyline GmbH
+ -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1,
+                    width=device-width, height=device-height">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/anyline.css">
+    <title>Anyline Cordova Example</title>
+
+</head>
+
+<body>
+<h1>Anyline Cordova</h1>
+
+<input type="button" value="Document" onclick="anyline.document.scan()"/>
+<hr>
+<details id="details_results">
+    <summary class="summary1">
+        Results
+    </summary>
+    <p>
+    <div id="results">
+
+    </div>
+    </p>
+</details>
+
+
+</div>
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/anyline.document.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+/* Page count */
+"%lu Pages" = "%lu Pages";
+/* Page Counter without pages */
+"0 Pages" = "0 Pages";
+/* Asks the user if he wants to delete an image (title) */
+"Are you sure?" = "Are you sure?";
+/* Cancel deletion
+ left navigation button title in the crop view controller */
+"Cancel" = "Cancel";
+/* Title for the alert view if the scanner cancel action fails */
+"Cancel Scanning Error" = "Cancel Scanning Error";
+/* Delete image */
+"Delete" = "Delete";
+/* Asks the user if he wants to delete an image (message) */
+"Do you really want to remove this image?" = "Do you really want to remove this image?";
+/* Document not sharp warning */
+"Document not Sharp" = "Document not Sharp";
+/* Done button in document scanner
+ right navigation button title in the crop view controller */
+"Done" = "Done";
+/* Done button title
+ Title for the alert view dismiss button for failed scan action start */
+"OK" = "OK";
+/* Processing label title */
+"Processing" = "Processing";
+/* Title for document scanner VC */
+"Scan" = "Scan";
+/* Title of the cropping view controller */
+"Scan Ausschnitt" = "Scan Ausschnitt";
+/* Title for the alert view if the scanner start action fails */
+"Start Scanning Error" = "Start Scanning Error";
+/* Document is too dark warning */
+"Too Dark" = "Too Dark";
+/* Device is shaking too much warning */
+"Too much shaking" = "Too much shaking";
+/* Document has wrong perspective warning */
+"Wrong Perspective" = "Wrong Perspective";

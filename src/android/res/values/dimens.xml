@@ -1,0 +1,19 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="DEFAULT_PADDING">8dp</dimen>
+    <dimen name="DEFAULT_PADDINGx2">16dp</dimen>
+    <dimen name="DEFAULT_PADDINGx3">24dp</dimen>
+    <dimen name="polygonViewCircleWidth">30dp</dimen>
+    <dimen name="polygonViewCircleWidthHalf">15dp</dimen>
+    <dimen name="polygonViewStrokeWidth">1dp</dimen>
+    <dimen name="text_size_error_message">15sp</dimen>
+    <item name="tetragon_edge_width" format="float" type="dimen">2.0</item>
+    <dimen name="magnify_size">100dp</dimen>
+    <dimen name="magnify_border">2dp</dimen>
+    <dimen name="magnify_crosshair_radius">4dp</dimen>
+    <dimen name="magnify_crosshair_stroke">1dp</dimen>
+    <dimen name="toolbarHeight">50dp</dimen>
+    <item name="magnify_magnification_factor" format="float" type="dimen">1.5</item>
+</resources>
