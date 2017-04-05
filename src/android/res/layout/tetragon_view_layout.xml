@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/tetragon_view"
-    android:layout_centerInParent="true">
+    android:layout_centerInParent="true"
+    android:context="io.anyline.adcubum.TetragonView">
 
     <ImageView
         android:id="@+id/tetragon_point1"

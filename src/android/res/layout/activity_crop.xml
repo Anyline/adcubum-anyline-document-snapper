@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.anyline.adcubum.CropDocumentActivity">
-
-
+    tools:context=".CropDocumentActivity">
 
     <ImageView
         android:id="@+id/crop_activity_image"
@@ -22,7 +20,7 @@
         android:layout_marginTop="@dimen/toolbarHeight"/>
 
 
-    <include layout="@layout/tetragon_view_layout"></include>
+    <include layout="@layout/tetragon_view_layout" />
 
     <io.anyline.adcubum.MagnifyImageView
         android:id="@+id/crop_activity_magnify"
