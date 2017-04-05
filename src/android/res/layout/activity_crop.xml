@@ -20,7 +20,7 @@
         android:layout_marginTop="@dimen/toolbarHeight"/>
 
 
-    <include layout="@layout/tetragon_view_layout" />
+    <io.anyline.adcubum.TetragonView></io.anyline.adcubum.TetragonView>
 
     <io.anyline.adcubum.MagnifyImageView
         android:id="@+id/crop_activity_magnify"
