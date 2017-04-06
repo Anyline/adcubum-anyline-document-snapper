@@ -46,15 +46,15 @@ public class MagnifyImageView extends ImageView {
 
     private void initValues(){
         TypedValue magFactor = new TypedValue();
-        getResources().getValue(getResources().getIdentifier("magnify_magnification_factor", "dimen","io.anyline.adcubum"), magFactor, true);
+        getResources().getValue(getResources().getIdentifier("magnify_magnification_factor", "dimen", this.context.getPackageName()), magFactor, true);
         this.magFactor = magFactor.getFloat();
 
 
 
         crosshairPaint = new Paint();
-        crosshairPaint.setColor(getResources().getIdentifier("tetragon_edge_color", "color", "io.anyline.adcubum"));
+        crosshairPaint.setColor(getResources().getIdentifier("tetragon_edge_color", "color", this.context.getPackageName()));
         crosshairPaint.setStyle(Paint.Style.STROKE);
-        crosshairPaint.setStrokeWidth(getResources().getIdentifier("magnify_crosshair_stroke", "color", "io.anyline.adcubum"));
+        crosshairPaint.setStrokeWidth(getResources().getIdentifier("magnify_crosshair_stroke", "color", this.context.getPackageName()));
         crosshairPaint.setAntiAlias(true);
 
     }
@@ -193,13 +193,13 @@ public class MagnifyImageView extends ImageView {
             shaderPaint.setAntiAlias(true);
 
             float radius = getWidth()/2;
-            float border =  getResources().getDimension(getResources().getIdentifier("magnify_border", "dimen", "io.anyline.adcubum"));
+            float border =  getResources().getDimension(getResources().getIdentifier("magnify_border", "dimen", this.context));
 
             canvas.drawCircle(radius  , radius, radius-border, shaderPaint);
 
             //draw crosshair
 
-            canvas.drawCircle(radius  , radius, getResources().getDimension(getResources().getIdentifier("magnify_crosshair_radius", "dimen", "io.anyline.adcubum")), crosshairPaint);
+            canvas.drawCircle(radius  , radius, getResources().getDimension(getResources().getIdentifier("magnify_crosshair_radius", "dimen", this.context.getPackageName())), crosshairPaint);
         }
     }
     //not used:

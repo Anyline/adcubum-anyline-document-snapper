@@ -20,16 +20,16 @@ public class TetragonView extends FrameLayout {
 
     Context context;
 
-    //@BindView(getResources().getIdentifier("tetragon_point1", "id", "io.anyline.adcubum"))
+    //@BindView(getResources().getIdentifier("tetragon_point1", "id", this.context.getPackageName()))
     ImageView point1; //starts TopLeft
 
-    //@BindView(getResources().getIdentifier("tetragon_point2", "id", "io.anyline.adcubum"))
+    //@BindView(getResources().getIdentifier("tetragon_point2", "id", this.context.getPackageName()))
     ImageView point2; //starts TopRight
 
-    //@BindView(getResources().getIdentifier("tetragon_point3", "id", "io.anyline.adcubum"))
+    //@BindView(getResources().getIdentifier("tetragon_point3", "id", this.context.getPackageName()))
     ImageView point3; //starts BottomRight
 
-    //@BindView(getResources().getIdentifier("tetragon_point4", "id", "io.anyline.adcubum"))
+    //@BindView(getResources().getIdentifier("tetragon_point4", "id", this.context.getPackageName()))
     ImageView point4; //starts BottomLeft
 
     private Paint paintEdges = new Paint();
@@ -54,10 +54,10 @@ public class TetragonView extends FrameLayout {
         super.onFinishInflate();
         //ButterKnife.bind(this);
 
-        point1 = (ImageView) findViewById(getResources().getIdentifier("tetragon_point1", "id", "io.anyline.adcubum")) ;
-        point2= (ImageView) findViewById(getResources().getIdentifier("tetragon_point2", "id", "io.anyline.adcubum")) ;
-        point3= (ImageView) findViewById(getResources().getIdentifier("tetragon_point3", "id", "io.anyline.adcubum")) ;
-        point4 = (ImageView) findViewById(getResources().getIdentifier("tetragon_point4", "id", "io.anyline.adcubum")) ;
+        point1 = (ImageView) findViewById(getResources().getIdentifier("tetragon_point1", "id", this.context.getPackageName())) ;
+        point2= (ImageView) findViewById(getResources().getIdentifier("tetragon_point2", "id", this.context.getPackageName())) ;
+        point3= (ImageView) findViewById(getResources().getIdentifier("tetragon_point3", "id", this.context.getPackageName())) ;
+        point4 = (ImageView) findViewById(getResources().getIdentifier("tetragon_point4", "id", this.context.getPackageName())) ;
 
         point1.setOnTouchListener(new CornerTouchListener());
         point2.setOnTouchListener(new CornerTouchListener());
@@ -124,22 +124,22 @@ public class TetragonView extends FrameLayout {
     }
 
     private void initPaintAttributes() {
-        this.paintEdges.setColor(getResources().getColor(getResources().getIdentifier("tetragon_edge_color", "color", "io.anyline.adcubum")));
+        this.paintEdges.setColor(getResources().getColor(getResources().getIdentifier("tetragon_edge_color", "color", this.context.getPackageName())));
         TypedValue floatFromR = new TypedValue();
-        getResources().getValue(getResources().getIdentifier("tetragon_edge_width", "dimen", "io.anyline.adcubum"), floatFromR, true);
+        getResources().getValue(getResources().getIdentifier("tetragon_edge_width", "dimen", this.context.getPackageName()), floatFromR, true);
         this.paintEdges.setStrokeWidth(floatFromR.getFloat());
         this.paintEdges.setAntiAlias(true);
         this.paintEdges.setStyle(Paint.Style.STROKE);
 
-        this.paintEdgesAccent.setColor(getResources().getColor(getResources().getIdentifier("tetragon_edge_color_accent", "color", "io.anyline.adcubum")));
+        this.paintEdgesAccent.setColor(getResources().getColor(getResources().getIdentifier("tetragon_edge_color_accent", "color", this.context.getPackageName())));
         this.paintEdgesAccent.setStrokeWidth(floatFromR.getFloat());
         this.paintEdgesAccent.setAntiAlias(true);
         this.paintEdgesAccent.setStyle(Paint.Style.STROKE);
 
-        this.paintArea.setColor(getResources().getColor(getResources().getIdentifier("tetragon_area_color", "color", "io.anyline.adcubum")));
+        this.paintArea.setColor(getResources().getColor(getResources().getIdentifier("tetragon_area_color", "color", this.context.getPackageName())));
         this.paintArea.setStyle(Paint.Style.FILL);
 
-        this.paintAreaAccent.setColor(getResources().getColor(getResources().getIdentifier("tetragon_area_color_accent", "color", "io.anyline.adcubum")));
+        this.paintAreaAccent.setColor(getResources().getColor(getResources().getIdentifier("tetragon_area_color_accent", "color", this.context.getPackageName())));
         this.paintAreaAccent.setStyle(Paint.Style.FILL);
 
     }

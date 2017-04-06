@@ -147,9 +147,9 @@ public class ScanPagePagerAdapter extends RecyclingPagerAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         if (viewHolder == null) {
-            view = mLayoutInflater.inflate(mContext.getResources().getIdentifier("scan_page_layout", "layout", "io.anyline.adcubum"), container, false);
+            view = mLayoutInflater.inflate(mContext.getResources().getIdentifier("scan_page_layout", "layout", this.mContext.getPackageName()), container, false);
             viewHolder = new ViewHolder();
-            viewHolder.pageImageView = (ImageView) view.findViewById(mContext.getResources().getIdentifier("scanPageImageView", "id", "io.anyline.adcubum"));
+            viewHolder.pageImageView = (ImageView) view.findViewById(mContext.getResources().getIdentifier("scanPageImageView", "id", this.mContext.getPackageName()));
             view.setTag(viewHolder);
         }
 
