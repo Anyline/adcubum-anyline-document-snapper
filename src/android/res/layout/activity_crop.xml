@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CropDocumentActivity">
+    tools:context="io.anyline.adcubum.CropDocumentActivity">
 
     <ImageView
         android:id="@+id/crop_activity_image"
