@@ -193,7 +193,7 @@ public class MagnifyImageView extends ImageView {
             shaderPaint.setAntiAlias(true);
 
             float radius = getWidth()/2;
-            float border =  getResources().getDimension(getResources().getIdentifier("magnify_border", "dimen", this.context));
+            float border =  getResources().getDimension(getResources().getIdentifier("magnify_border", "dimen", this.context.getPackageName()));
 
             canvas.drawCircle(radius  , radius, radius-border, shaderPaint);
 
