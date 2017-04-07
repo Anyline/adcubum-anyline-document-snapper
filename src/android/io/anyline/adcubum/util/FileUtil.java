@@ -15,7 +15,6 @@ import java.io.IOException;
 
 import at.nineyards.anyline.models.AnylineImage;
 import io.anyline.adcubum.DocumentActivity;
-import io.anyline.adcubum.MainActivity;
 
 public class FileUtil {
 
