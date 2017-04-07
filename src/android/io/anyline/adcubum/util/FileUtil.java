@@ -3,6 +3,7 @@ package io.anyline.adcubum.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.os.Environment;
 import android.util.Log;
@@ -13,6 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import at.nineyards.anyline.models.AnylineImage;
+import io.anyline.adcubum.DocumentActivity;
+import io.anyline.adcubum.MainActivity;
 
 public class FileUtil {
 
@@ -37,12 +40,12 @@ public class FileUtil {
         return false;
     }
 
-    public static File getExternalStorageFile(String filename){
+    public static File getExternalStorageFile(String filename) {
         File sd = Environment.getExternalStorageDirectory();
         return new File(sd, filename);
     }
 
-    public static void copyRessourceToExternalStorage(Context context, int resourceId, String filename){
+    public static void copyRessourceToExternalStorage(Context context, int resourceId, String filename) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
         File sd = Environment.getExternalStorageDirectory();
         File dest = new File(sd, filename);
@@ -101,23 +104,34 @@ public class FileUtil {
         return null;
     }
 
-    public static boolean writeOrientationToFile(String filePath, float rotationAngle){
+    public static boolean writeOrientationToFile(String filePath, float rotationAngle, Context context) {
         try {
-            ExifInterface exif = new ExifInterface(filePath);
-            String orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION);
-            Log.d(TAG, "Orientation was: " + orientString);
-            int orientation = orientString != null ? Integer.parseInt(orientString) :  ExifInterface.ORIENTATION_NORMAL;
 
-            if(rotationAngle == 90) orientation = ExifInterface.ORIENTATION_ROTATE_90;
-            if(rotationAngle == 180) orientation = ExifInterface.ORIENTATION_ROTATE_180;
-            if(rotationAngle == 270) orientation = ExifInterface.ORIENTATION_ROTATE_270;
+            File targetDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), DocumentActivity.SESSION_FOLDER_TRANSFORMED);
+            String filename = filePath.substring(filePath.lastIndexOf("/") + 1);
+            Log.d(TAG, "Orientation was: " + rotationAngle);
 
-            exif.setAttribute(ExifInterface.TAG_ORIENTATION, "" + orientation);
-            exif.saveAttributes();
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotationAngle);
+            Bitmap originalBitmap = BitmapFactory.decodeFile(filePath);
+
+            Bitmap resizedBitmap = Bitmap.createBitmap(originalBitmap, 0, 0,
+                    originalBitmap.getWidth(), originalBitmap.getHeight(), matrix, true);
+
+            File outFile = new File(targetDir, filename);
+
+            FileOutputStream fos;
+
+            try {
+                fos = new FileOutputStream(outFile);
+                resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
             return true;
 
-        }
-        catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="io.anyline.adcubum.CropDocumentActivity">
 
     <ImageView
@@ -20,7 +21,10 @@
         android:layout_marginTop="@dimen/toolbarHeight"/>
 
 
-    <include layout="@layout/tetragon_view_layout" />
+    <include layout="@layout/tetragon_view_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/standart_toolbar"/>
 
     <io.anyline.adcubum.MagnifyImageView
         android:id="@+id/crop_activity_magnify"
@@ -29,9 +33,55 @@
         android:visibility="visible"
         android:gravity="top|left"
         android:background="@drawable/magnify"
-        android:layout_marginTop="@dimen/toolbarHeight"
+        android:layout_below="@+id/standart_toolbar"
+
         />
-    <include layout="@layout/standart_toolbar" />
+
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/standart_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbarHeight"
+        android:background="@color/bg_grey"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/finish_activity"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:gravity="end"
+                android:textColor="@color/white"
+                android:textSize="10pt"
+                android:visibility="visible"
+                android:text="@string/finished"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/cancel_scan_action_overview"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@color/white" />
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.Toolbar>
 
 
 

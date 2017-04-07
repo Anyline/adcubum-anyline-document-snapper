@@ -6,12 +6,12 @@
     <string name="error_no_subject">No subject defined</string>
     <string name="document_subject">Subject for document %1$d</string>
     <string name="hint_document_subject">Please enter a subject</string>
-    <string name="finished">done</string>
-    <string name="page">page</string>
-    <string name="pages">pages</string>
+    <string name="finished">Done</string>
+    <string name="page">Page</string>
+    <string name="pages">Pages</string>
     <string name="message_empty_document">Your document is empty, do you really want to exit?</string>
-    <string name="yes">yes</string>
-    <string name="no">no</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="continue_editing">Continue editing</string>
     <string name="no_item">No item</string>
     <string name="error_no_camera_permission">Error no camera permission</string>
