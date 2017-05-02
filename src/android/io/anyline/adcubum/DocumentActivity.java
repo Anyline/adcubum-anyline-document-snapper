@@ -175,6 +175,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             public void onResult(DocumentResult documentResult) {
 
                 Log.d(TAG, "onResult");
+                stopScanning(true);
                 AnylineImage fullFrame = documentResult.getFullImage();
                 AnylineImage transformedImage = documentResult.getResult();
                 List<PointF> corners = documentResult.getOutline();
@@ -229,6 +230,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                 // if corners could not be detected -> the corners are the outline of the image
 
                 File fullImageFile = saveFullImageToDisk(fullFrame);
+                Log.d(TAG, "imagePath " + fullImageFile.getAbsolutePath());
                 startCropViewFor(fullImageFile.getAbsolutePath(), corners);
                 //fullFrame.release();
             }
@@ -355,8 +357,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "triggerPictureCornerDetection");
-                documentScanView.triggerPictureCornerDetection();// triggers corner detection -> callback on onPictureCornersDetected
                 stopScanning(true);
+                documentScanView.triggerPictureCornerDetection();// triggers corner detection -> callback on onPictureCornersDetected
                 showProgressDialog();
                 manualTriggeredImage = true;
             }
@@ -421,6 +423,9 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private File saveFullImageToDisk(AnylineImage fullImage) {
         File outDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SESSION_FOLDER_ORIGINALS);
+        if(!outDir.exists()){
+            outDir.mkdir();
+        }
         String filename = "" + fileId + FULL_IMAGE_POSTFIX;
         return FileUtil.saveImage(outDir, filename, fullImage);
     }
@@ -586,16 +591,18 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     @Override
     protected void onResume() {
         super.onResume();
-        startScanning();
         closeProgressDialog();
         handler.post(errorMessageCleanup);
+        if(!cropRequested) {
+            startScanning();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         //stop the scanning
-        documentScanView.cancelScanning();
+        stopScanning(true);
         //release the camera (must be called in onPause, because there are situations where
         // it cannot be auto-detected that the camera should be released)
         documentScanView.releaseCameraInBackground();
@@ -603,11 +610,10 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     @Override
     protected void onDestroy() {
-        closeProgressDialog();
         super.onDestroy();
+        closeProgressDialog();
+
         handler.removeCallbacks(errorMessageCleanup);
-        errorMessageCleanup = null;
-        handler = null;
     }
 
     @Override
@@ -632,6 +638,9 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         Log.d(TAG, "fullImageFile Path:" + fullImageFile.getAbsolutePath() + " corners: " + corners.toString());
 
         File targetDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), DocumentActivity.SESSION_FOLDER_TRANSFORMED);
+        if(!targetDir.exists()){
+            targetDir.mkdir();
+        }
         String filename = "" + System.currentTimeMillis() + "" + DocumentActivity.TRANSFORMED_IMAGE_POSTFIX;
         final File outFile = new File(targetDir, filename);
         showProgressDialog();
@@ -674,7 +683,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult");
-
+        closeProgressDialog();
         if (requestCode == CROP_DOCUMENT_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="launcher_name">@string/app_name</string>
-    <string name="activity_name">@string/launcher_name</string>
     <string name="error_no_subject">Aucun sujet défini</string>
     <string name="document_subject">Sujet du document %1$d</string>
     <string name="hint_document_subject">Veuillez saisir un sujet</string>

@@ -50,7 +50,8 @@
     NSString *cacheDirectory = [paths objectAtIndex:0];
 
     { // store corrected image
-        NSData *data = UIImagePNGRepresentation([self.originalImage imageByCorrectingPerspectiveWithFeatures:self.imageCorners]);
+        UIImage * docImage = [self.originalImage imageByCorrectingPerspectiveWithFeatures:self.imageCorners];
+        NSData *data = UIImageJPEGRepresentation(docImage, 1);
         self.correctedImagePath = [cacheDirectory stringByAppendingFormat:@"/%@-corrected.jpg", self.imageKey];
         [data writeToFile:self.correctedImagePath atomically:YES];
     }

@@ -3,26 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.anyline.adcubum.DocumentActivity"
-    android:layout_below="@+id/toolbar">
+    tools:context="io.anyline.adcubum.DocumentActivity">
 
 
     <at.nineyards.anyline.modules.document.DocumentScanView
         android:id="@+id/document_scan_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:api_2_enabled="false"/>
 
 
     <ImageView
         android:id="@+id/full_image"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:layout_marginTop="@dimen/toolbarHeight"/>
-
+        android:layout_below="@+id/scan_toolbar"
+        android:adjustViewBounds="true" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/scan_toolbar"

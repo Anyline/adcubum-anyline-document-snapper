@@ -171,7 +171,7 @@ public class OverviewActivity extends AppCompatActivity {
         for (int i = 0; i < mAdapter.getCount(); i++) {
             ScanPage scanPage = mAdapter.getScanPage(i);
             if (scanPage.isRotated()) {
-                FileUtil.writeOrientationToFile(scanPage.getCroppedImagePath(), scanPage.getRotationInDegrees());
+                FileUtil.writeOrientationToFile(scanPage.getCroppedImagePath(), scanPage.getRotationInDegrees(), getBaseContext());
             }
             try {
                 JSONObject json = new JSONObject();

@@ -113,6 +113,7 @@
         <config-file mode="merge" parent="/manifest" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.CAMERA"/>
             <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         </config-file>
         <config-file mode="merge" parent="/manifest/application" target="AndroidManifest.xml" android:theme="@style/AppTheme" >
 
@@ -185,10 +186,6 @@
         <resource-file src="src/android/res/drawable/ic_delete_black_24dp.png" target="res/drawable/ic_delete_black_24dp.png"/>
         <resource-file src="src/android/res/drawable/ic_note_add_black_24dp.png" target="res/drawable/ic_note_add_black_24dp.png"/>
         <resource-file src="src/android/res/drawable/ic_rotate_right_black_24dp.png" target="res/drawable/ic_rotate_right_black_24dp.png"/>
-
-
-<!--        <resource-file src="src/android/libs/anylinesdk-release-3.11.0-dev.aar" target="libs/anylinesdk-release-3.11.0-dev.aar"/> --> <!-- now via maven -->
-
 
 
     </platform>
