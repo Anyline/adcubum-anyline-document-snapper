@@ -84,11 +84,11 @@
 <source-file src="src/ios/ALDocumentScanner/UIImage+Transformations.m" target-dir="ALDocumentScanner"/>
 <header-file src="src/ios/ALDocumentScanner/UIImageView+GeometryConversion.h" target-dir="ALDocumentScanner"/>
 <source-file src="src/ios/ALDocumentScanner/UIImageView+GeometryConversion.m" target-dir="ALDocumentScanner"/>
-<!--<source-file src="src/ios/de.lproj/Localizable.strings" target-dir="../../../de.lproj/"/>
-<source-file src="src/ios/en.lproj/Localizable.strings" target-dir="../../../en.lproj/"/>
-<source-file src="src/ios/es.lproj/Localizable.strings" target-dir="../../../es.lproj/"/>
-<source-file src="src/ios/fr.lproj/Localizable.strings" target-dir="../../../fr.lproj/"/>
-   -->
+<source-file src="src/ios/de.lproj/Localizable.strings" target-dir="../../../de.lproj/"/>
+        <!--<source-file src="src/ios/en.lproj/Localizable.strings" target-dir="../../../en.lproj/"/>
+        <source-file src="src/ios/es.lproj/Localizable.strings" target-dir="../../../es.lproj/"/>
+        <source-file src="src/ios/fr.lproj/Localizable.strings" target-dir="../../../fr.lproj/"/>
+           -->
      <!-- Anyline Framework & Resource Bundle -->
         <framework custom="true" src="src/ios/anyline_sdk/Anyline.framework"/>
         <resource-file src="src/ios/anyline_sdk/AnylineResources.bundle"/>
