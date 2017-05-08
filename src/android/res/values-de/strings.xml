@@ -15,7 +15,7 @@
     <string name="error_wait_for_action">Bitte warten...</string>
     <string name="camera_error_fatal">Kamera Fehler</string>
     <string name="ok">OK</string>
-    <string name="cancel_activity">abbrechen</string>
+    <string name="cancel_activity">Abbrechen</string>
     <string name="error_unkown_scan_mode">Unbekannter Scan Modus:</string>
     <string name="error_invalid_json_data">Config json ist ungültig.</string>
     <string name="error_invalid_segment_config">Semgent config nicht gültig. Muss gleiche Anzahl von Titeln und Modi haben.</string>

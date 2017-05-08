@@ -84,7 +84,8 @@ static CGFloat const kLabelHeight =                                     30;
             self.navigationItem.rightBarButtonItem = pageButton;
             
             UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
-                                             initWithBarButtonSystemItem:(UIBarButtonSystemItemCancel)
+                                             initWithTitle:NSLocalizedString(@"Cancel", @"Cancel deletion left navigation button title in the crop view controller")
+                                             style:UIBarButtonItemStylePlain
                                              target:self
                                              action:@selector(cancelButtonPressed:)];
             
