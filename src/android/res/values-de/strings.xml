@@ -3,7 +3,7 @@
     <string name="error_no_subject">Kein Thema definiert</string>
     <string name="document_subject">Thema für Dokument %1$d</string>
     <string name="hint_document_subject">Bitte geben Sie einen Betreff ein</string>
-    <string name="finished">Abschliessen</string>
+    <string name="finished">Fertig</string>
     <string name="page">Seite </string>
     <string name="pages">Seiten </string>
     <string name="message_empty_document">Ihr Dokument ist leer, wollen Sie wirklich aussteigen?</string>

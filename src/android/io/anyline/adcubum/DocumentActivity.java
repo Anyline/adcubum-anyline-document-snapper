@@ -317,10 +317,10 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             successfulScanCount.setVisibility(View.INVISIBLE);
         } else if (successfulScanCounter == 1) {
             successfulScanCount.setVisibility(View.VISIBLE);
-            successfulScanCount.setText(successfulScanCounter + " " + getResources().getString(getResources().getIdentifier("page", "string", getPackageName())) + ">");
+            successfulScanCount.setText(successfulScanCounter + " " + getResources().getString(getResources().getIdentifier("page", "string", getPackageName())) + " >");
         } else {
             successfulScanCount.setVisibility(View.VISIBLE);
-            successfulScanCount.setText(successfulScanCounter + " " + getResources().getString(getResources().getIdentifier("pages", "string", getPackageName())) + ">");
+            successfulScanCount.setText(successfulScanCounter + " " + getResources().getString(getResources().getIdentifier("pages", "string", getPackageName())) + " >");
         }
 
     }
