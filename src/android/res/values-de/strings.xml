@@ -24,8 +24,8 @@
     <string name="error_occured">Ein Fehler ist aufgetreten.</string>
     <string name="document_advanced_outline_detection">Dokument wird gesucht</string>
     <string name="document_fast_outline_detection">Schnelle Outline Erkennung</string>
-    <string name="document_error_not_sharp">Das Dokument ist nicht scharf. Bitte halten Sie die Kamera still und stellen Sie sicher, dass das Dokument im Fokus ist</string>
-    <string name="document_error_skew_too_high">Dokument ist schief. Halten Sie die Kamera direkt über das Dokument</string>
+    <string name="document_error_not_sharp">Dokument ist unscharf. Halten Sie die Kamera still.</string>
+    <string name="document_error_skew_too_high">Dokument ist schief. Halten Sie die Kamera direkt über das Dokument.</string>
     <string name="document_error_outline_not_found">Bitte manuell scannen</string>
     <string name="document_error_glare_detected">Bitte entfernen Sie die Blendung</string>
     <string name="document_error_too_dark">Bild ist zu dunkel</string>
