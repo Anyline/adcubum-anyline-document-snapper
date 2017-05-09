@@ -26,6 +26,8 @@
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.textColor = [UIColor whiteColor];
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.numberOfLines = 0;
         [self addSubview:self.textLabel];
         self.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:nil views:@{@"label" : self.textLabel}]];// full width
