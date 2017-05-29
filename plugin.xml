@@ -149,7 +149,8 @@
         <resource-file src="src/android/res/values/strings.xml" target="res/values/strings.xml" />
         <resource-file src="src/android/res/values-de/strings.xml" target="res/values-de/strings.xml" />
         <resource-file src="src/android/res/values-fr/strings.xml" target="res/values-fr/strings.xml" />
-        <resource-file src="src/android/res/values-es/strings.xml" target="res/values-es/strings.xml" />
+        <resource-file src="src/android/res/values-it/strings.xml" target="res/values-it/strings.xml" />
+        <resource-file src="src/android/res/values-en/strings.xml" target="res/values-en/strings.xml" />
         <resource-file src="src/android/res/layout/activity_scan_document.xml" target="res/layout/activity_scan_document.xml"
         />
         <resource-file src="src/android/res/layout/activity_main.xml" target="res/layout/activity_main.xml" />

@@ -1,35 +1,39 @@
 /* Page count */
-"%lu Pages" = "%lu Pages";
+"%lu Pages" = "%lu Seiten";
 /* Page Counter without pages */
-"0 Pages" = "0 Pages";
+"0 Pages" = "0 Seiten";
 /* Asks the user if he wants to delete an image (title) */
-"Are you sure?" = "Tu es sûr?";
+"Are you sure?" = "Sind Sie sicher?";
+/* Are you sure you want to exit? Every Scan will be deleted!*/
+"Are you sure you want to exit? Every Scan will be deleted!" = "Alle Scans werden gelöscht.";
 /* Cancel deletion
  left navigation button title in the crop view controller */
-"Cancel" = "Annuler";
+"Cancel" = "Abbrechen";
+/* Continue scanning */
+"Continue scanning" = "Dokument scannen";
 /* Title for the alert view if the scanner cancel action fails */
-"Cancel Scanning Error" = "Annuler Erreur de balayage";
+"Cancel Scanning Error" = "Abbrechen fehlgeschlagen";
 /* Delete image */
-"Delete" = "Effacer";
+"Delete" = "Löschen";
 /* Asks the user if he wants to delete an image (message) */
-"Do you really want to remove this image?" = "Voulez-vous vraiment supprimer cette image?";
+"Do you really want to remove this image?" = "Möchten Sie dieses Bild wirklich entfernen?";
 /* Document not sharp warning */
-"Document not Sharp" = "Aiguisant aucun document";
+"Document not Sharp" = "Dokument ist unscharf. Halten Sie die Kamera still.";
 /* Done button in document scanner
  right navigation button title in the crop view controller */
-"Done" = "Fait";
+"Done" = "Fertig";
 /* Done button title
  Title for the alert view dismiss button for failed scan action start */
 "OK" = "OK";
 /* Processing label title */
-"Processing" = "En traitement";
+"Processing" = "Wird bearbeitet";
 /* Title for document scanner VC */
-"Scan" = "Scanner";
+"Scan" = "Scannen";
 /* Title for the alert view if the scanner start action fails */
-"Start Scanning Error" = "Erreur d'analyse Démarrer";
+"Start Scanning Error" = "Start Scannen Fehler";
 /* Document is too dark warning */
-"Too Dark" = "Trop sombre";
+"Too Dark" = "Bild ist zu dunkel";
 /* Device is shaking too much warning */
-"Too much shaking" = "Trop tremblements";
+"Too much shaking" = "Nicht bewegen";
 /* Document has wrong perspective warning */
-"Wrong Perspective" = "Perspective erronée";
+"Wrong Perspective" = "Falsche Perspektive";

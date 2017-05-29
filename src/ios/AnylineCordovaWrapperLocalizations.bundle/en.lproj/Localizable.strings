@@ -1,37 +1,39 @@
 /* Page count */
-"%lu Pages" = "%lu Pages";
+"%lu Pages" = "%lu Seiten";
 /* Page Counter without pages */
-"0 Pages" = "0 Pages";
+"0 Pages" = "0 Seiten";
 /* Asks the user if he wants to delete an image (title) */
-"Are you sure?" = "Are you sure?";
+"Are you sure?" = "Sind Sie sicher?";
+/* Are you sure you want to exit? Every Scan will be deleted!*/
+"Are you sure you want to exit? Every Scan will be deleted!" = "Alle Scans werden gelöscht.";
 /* Cancel deletion
  left navigation button title in the crop view controller */
-"Cancel" = "Cancel";
+"Cancel" = "Abbrechen";
+/* Continue scanning */
+"Continue scanning" = "Dokument scannen";
 /* Title for the alert view if the scanner cancel action fails */
-"Cancel Scanning Error" = "Cancel Scanning Error";
+"Cancel Scanning Error" = "Abbrechen fehlgeschlagen";
 /* Delete image */
-"Delete" = "Delete";
+"Delete" = "Löschen";
 /* Asks the user if he wants to delete an image (message) */
-"Do you really want to remove this image?" = "Do you really want to remove this image?";
+"Do you really want to remove this image?" = "Möchten Sie dieses Bild wirklich entfernen?";
 /* Document not sharp warning */
-"Document not Sharp" = "Document not Sharp";
+"Document not Sharp" = "Dokument ist unscharf. Halten Sie die Kamera still.";
 /* Done button in document scanner
  right navigation button title in the crop view controller */
-"Done" = "Done";
+"Done" = "Fertig";
 /* Done button title
  Title for the alert view dismiss button for failed scan action start */
 "OK" = "OK";
 /* Processing label title */
-"Processing" = "Processing";
+"Processing" = "Wird bearbeitet";
 /* Title for document scanner VC */
-"Scan" = "Scan";
-/* Title of the cropping view controller */
-"Scan Ausschnitt" = "Scan Ausschnitt";
+"Scan" = "Scannen";
 /* Title for the alert view if the scanner start action fails */
-"Start Scanning Error" = "Start Scanning Error";
+"Start Scanning Error" = "Start Scannen Fehler";
 /* Document is too dark warning */
-"Too Dark" = "Too Dark";
+"Too Dark" = "Bild ist zu dunkel";
 /* Device is shaking too much warning */
-"Too much shaking" = "Too much shaking";
+"Too much shaking" = "Nicht bewegen";
 /* Document has wrong perspective warning */
-"Wrong Perspective" = "Wrong Perspective";
+"Wrong Perspective" = "Falsche Perspektive";
