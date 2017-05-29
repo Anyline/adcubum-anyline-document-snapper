@@ -13,6 +13,7 @@
 #import "ALDocumentOverviewToolBar.h"
 #import "UIImage+Transformations.h"
 #import "ALDocumentCropViewController.h"
+#import "ALLocalizationMacro.h"
 
 static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollectionViewCellID";
 
@@ -28,6 +29,8 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 @property (nonatomic, strong) NSString                                      *anylineLicenseKey;
 @property (nonatomic, strong) NSString                                      *documentSubject;
 
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
+
 @end
 
 
@@ -41,7 +44,22 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 
 #pragma mark - API
 
-- (instancetype)initWithAnylineLicenseKey:(NSString *)licenseKey documentSubject:(NSString *)subject delegate:(id)delegate {
+- (instancetype)initWithAnylineLicenseKey:(NSString *)licenseKey
+                          documentSubject:(NSString *)subject
+                                 delegate:(id)delegate
+                     cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConfig {
+    return [self initWithAnylineLicenseKey:licenseKey
+                           documentSubject:subject
+                                  delegate:delegate
+                      cordovaConfiguration:cordovaConfig
+                              scannedPages:nil];
+}
+
+- (instancetype)initWithAnylineLicenseKey:(NSString *)licenseKey
+                          documentSubject:(NSString *)subject
+                                 delegate:(id)delegate
+                     cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConfig
+                             scannedPages:(NSArray<ALResultPage *> *)scannedPages {
     if (!licenseKey) @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"License key must not be nil." userInfo:nil];
     
     self = [super init];
@@ -49,33 +67,20 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
         self.documentSubject = subject;
         self.delegate = delegate;
         self.anylineLicenseKey = licenseKey;
+        self.cordovaConfig = cordovaConfig;
         
-        //self.title = NSLocalizedString(@"Scan", @"Title for document scanner VC");
-    }
-    
-    return self;
-}
-
-- (instancetype)initWithAnylineLicenseKey:(NSString *)licenseKey documentSubject:(NSString *)subject delegate:(id)delegate scannedPages:(NSArray<ALResultPage *> *)scannedPages {
-    if (!licenseKey) @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"License key must not be nil." userInfo:nil];
-    
-    self = [super init];
-    if (self) {
-        self.documentSubject = subject;
-        self.delegate = delegate;
-        self.anylineLicenseKey = licenseKey;
-        
-        self.resultDocument = [ALResultDocument new];
-        self.resultDocument.pages = scannedPages;
-        //self.title = NSLocalizedString(@"Scan", @"Title for document scanner VC");
+        if (scannedPages) {
+            self.resultDocument = [ALResultDocument new];
+            self.resultDocument.pages = scannedPages;
+        }
+        //self.title = ALLocalizedString(@"Scan", @"Title for document scanner VC");
     }
     
     return self;
 }
 
 
--(NSUInteger)supportedInterfaceOrientations
-{
+- (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
 
@@ -91,8 +96,8 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
     [super viewDidLoad];
     
     // setup navigation bar
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done button in document scanner") style:UIBarButtonItemStylePlain target:self action:@selector(finishScanAction)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel button in document scanner") style:UIBarButtonItemStylePlain target:self action:@selector(cancelScanning:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ALLocalizedString(@"Done", @"Done button in document scanner", self.cordovaConfig.languageKey) style:UIBarButtonItemStylePlain target:self action:@selector(finishScanAction)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ALLocalizedString(@"Cancel", @"Cancel button in document scanner", self.cordovaConfig.languageKey) style:UIBarButtonItemStylePlain target:self action:@selector(cancelScanning:)];
     
     // we don't want to interfere with the collection view
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -251,7 +256,8 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
     // nothing to crop
     if (selectedPage == NSNotFound) return;
     
-    ALDocumentCropViewController *cropVC = [[ALDocumentCropViewController alloc] initWithPage:self.resultDocument.pages[selectedPage]];
+    ALDocumentCropViewController *cropVC = [[ALDocumentCropViewController alloc] initWithPage:self.resultDocument.pages[selectedPage]
+                                                                         cordovaConfiguration:self.cordovaConfig];
     cropVC.delegate = self;
     UINavigationController *navC = [[UINavigationController alloc] initWithRootViewController:cropVC];
     [navC.navigationBar setBarTintColor:self.navigationController.navigationBar.barTintColor];
@@ -267,14 +273,14 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
  */
 - (IBAction)deletePageAction:(id)sender {
     __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Are you sure?", @"Asks the user if he wants to delete an image (title)")
-                                                                         message:NSLocalizedString(@"Do you really want to remove this image?", @"Asks the user if he wants to delete an image (message)")
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to delete an image (title)", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"Do you really want to remove this image?", @"Asks the user if he wants to delete an image (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel deletion") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Cancel", @"Cancel deletion", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete image") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Delete", @"Delete image", self.cordovaConfig.languageKey) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
             NSInteger selectedPage = [weakSelf _selectedPageIndex];
             
             // nothing to delete
@@ -296,14 +302,14 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 
 - (IBAction)cancelScanning:(id)sender {
     __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning")
-                                                                         message:NSLocalizedString(@"Are you sure you want to exit? Every Scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)")
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"Are you sure you want to exit? Every Scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue scanning", @"Continue scanning") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Continue scanning", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel scanning") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Cancel", @"Cancel scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         [weakSelf dismissViewControllerAnimated:YES completion:^{
             [weakSelf.delegate documentScannerDidAbort:self];
         }];

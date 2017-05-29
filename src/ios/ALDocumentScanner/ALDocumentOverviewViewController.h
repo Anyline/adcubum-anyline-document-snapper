@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ALResultPage.h"
+#import "ALCordovaUIConfiguration.h"
 
 @class ALDocumentOverviewViewController, ALResultDocument;
 
@@ -36,7 +37,14 @@
  *  @param subject    - document subject
  *  @param delegate   - delegate to receive scan results once the scan is finished
  */
-- (nonnull instancetype)initWithAnylineLicenseKey:(nonnull NSString *)licenseKey documentSubject:(nullable NSString *)subject delegate:(nullable id<ALDocumentOverviewViewControllerDelegate>)delegate;
+- (instancetype _Nonnull)initWithAnylineLicenseKey:(NSString *_Nonnull)licenseKey
+                          documentSubject:(NSString *_Nonnull)subject
+                                 delegate:(id _Nonnull)delegate
+                              cordovaConfiguration:(ALCordovaUIConfiguration *_Nonnull)cordovaConfig;
 
-- (nonnull instancetype)initWithAnylineLicenseKey:(nonnull NSString *)licenseKey documentSubject:(nonnull NSString *)subject delegate:(nullable id<ALDocumentOverviewViewControllerDelegate>)delegate scannedPages:(nonnull NSArray<ALResultPage *> *)scannedPages;
+- (instancetype _Nonnull)initWithAnylineLicenseKey:(NSString *_Nonnull)licenseKey
+                          documentSubject:(NSString *_Nonnull)subject
+                                 delegate:(id _Nonnull)delegate
+                     cordovaConfiguration:(ALCordovaUIConfiguration *_Nonnull)cordovaConfig
+                             scannedPages:(NSArray<ALResultPage *> *_Nullable)scannedPages;
 @end

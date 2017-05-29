@@ -7,6 +7,7 @@
 //
 
 #import "ALCordovaUIConfiguration.h"
+#import "ALLocalizationMacro.h"
 
 NSString * const DONE_BUTTON = @"doneButton";
 NSString * const DONE_BUTTON_TITLE = @"title";
@@ -30,7 +31,12 @@ NSString * const MULTIPAGE_ENABLED = @"multipageEnabled";
 NSString * const MULTIPAGE_TINTCOLOR = @"multipageTintColor";
 NSString * const MULTIPAGE_TRANSLUCENT = @"multipageTranslucent";
 
+NSString * const MANUAL_SCAN_BUTTON_COLOR = @"manualScanButtonColor";
+NSString * const MANUAL_SCAN_BUTTON_START_DURATION = @"manualScanButtonStartDuration";
+
 NSString * const MANUAL_CROP = @"manualCrop";
+
+NSString * const LANGUAGE_KEY = @"languageKey";
 
 NSString * const OFFSET = @"offset";
 NSString * const OFFSET_X = @"offset.x";
@@ -47,7 +53,6 @@ NSString * const OFFSET_Y = @"offset.y";
         _buttonDoneBackgroundColor = [UIColor clearColor];
         _buttonDoneFontSize = 32.0;
         _buttonType = ALButtonTypeFullWidth;
-        _buttonDoneTitle = NSLocalizedString(@"OK", @"Done button title");
         _buttonDoneXAlignment = ALButtonXAlignmentCenter;
         _buttonDoneYAlignment = ALButtonYAlignmentBottom;
         _buttonDoneYPositionOffset = -88.0;
@@ -134,8 +139,25 @@ NSString * const OFFSET_Y = @"offset.y";
                 _multipageTranslucent = [multipageDict valueForKey:MULTIPAGE_TRANSLUCENT];
         }
         
-        if([dictionary valueForKey:MANUAL_CROP])
+        if ([dictionary valueForKey:MANUAL_CROP]) {
             _manualCrop = [dictionary valueForKey:MANUAL_CROP];
+        }
+        
+        if ([dictionary valueForKey:MANUAL_SCAN_BUTTON_COLOR]) {
+            _manualScanButtonColor = [ALCordovaUIConfiguration colorFromHexString:[dictionary valueForKey:MANUAL_SCAN_BUTTON_COLOR]];
+        } else {
+            _manualScanButtonColor = [UIColor whiteColor];
+        }
+        
+        if ([dictionary valueForKey:MANUAL_SCAN_BUTTON_START_DURATION]) {
+            _manualScanButtonStartDuration = [[dictionary valueForKey:MANUAL_SCAN_BUTTON_START_DURATION] integerValue];
+        }
+        
+        if ([dictionary valueForKey:LANGUAGE_KEY]) {
+            _languageKey = [dictionary valueForKey:LANGUAGE_KEY];
+        }
+        
+        _buttonDoneTitle = ALLocalizedString(@"OK", @"Done button title", _languageKey);
     }
     return self;
 }

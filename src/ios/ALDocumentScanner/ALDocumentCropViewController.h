@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ALCordovaUIConfiguration.h"
 
 @class ALDocumentCropViewController, ALResultPage;
 
@@ -24,7 +25,7 @@
 
 @interface ALDocumentCropViewController : UIViewController
 
-- (nonnull instancetype)initWithPage:(nonnull ALResultPage *)page;
+- (nonnull instancetype)initWithPage:(nonnull ALResultPage *)page cordovaConfiguration:(ALCordovaUIConfiguration *_Nonnull)cordovaConfig;
 
 
 @property (nonatomic, assign, nullable) id<ALDocumentCropViewControllerDelegate> delegate;

@@ -54,6 +54,11 @@ typedef NS_ENUM(NSUInteger, ALButtonType) {
 @property (nonatomic,assign) BOOL multipageEnabled;
 
 @property (nonatomic,assign) BOOL manualCrop;
+
+@property (nonatomic,strong) UIColor *manualScanButtonColor;
+@property (nonatomic,assign) NSInteger manualScanButtonStartDuration;
+
+@property (nonatomic,strong) NSString *languageKey;
     
 -(instancetype) initWithDictionary:(NSDictionary*)dictionary;
 

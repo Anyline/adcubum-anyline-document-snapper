@@ -10,6 +10,7 @@
 #import "ALCroppingView.h"
 #import "ALResultPage.h"
 #import "ALMagnifyingGlass.h"
+#import "ALLocalizationMacro.h"
 
 @interface ALDocumentCropViewController ()
 
@@ -18,21 +19,22 @@
 @property (weak, nonatomic) IBOutlet ALCroppingView     *croppingView;
 
 @property (nonatomic, strong) ALResultPage              *page;
+@property (nonatomic, strong) ALCordovaUIConfiguration *cordovaConfig;
 @property (nonatomic, strong) UIImage              *testImage;
 
 @end
 
 @implementation ALDocumentCropViewController
 
-- (instancetype)initWithPage:(ALResultPage *)page {
+- (nonnull instancetype)initWithPage:(nonnull ALResultPage *)page cordovaConfiguration:(ALCordovaUIConfiguration *)cordovaConfig {
     self = [super init];
     if (self) {
         self.page = page;
-        
+        self.cordovaConfig = cordovaConfig;
         // setup navigation bar
-        //self.title = NSLocalizedString(@"Crop", @"Title of the cropping view controller");
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"left navigation button title in the crop view controller") style:UIBarButtonItemStylePlain target:self action:@selector(dismissAction)];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"right navigation button title in the crop view controller") style:UIBarButtonItemStylePlain target:self action:@selector(completeCroppingAction)];
+        //self.title = ALLocalizedString(@"Crop", @"Title of the cropping view controller");
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ALLocalizedString(@"Cancel", @"left navigation button title in the crop view controller", self.cordovaConfig.languageKey) style:UIBarButtonItemStylePlain target:self action:@selector(dismissAction)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:ALLocalizedString(@"Done", @"right navigation button title in the crop view controller", self.cordovaConfig.languageKey) style:UIBarButtonItemStylePlain target:self action:@selector(completeCroppingAction)];
         
     }
     return self;
@@ -42,7 +44,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
- 
+    
     // styling
     self.containerView.backgroundColor = [UIColor clearColor];
     self.pageImageView.backgroundColor = [UIColor clearColor];
@@ -57,7 +59,7 @@
     __weak __typeof(self) weakSelf = self;
     self.croppingView.croppingViewStateChangedHandler = ^(BOOL croppingAreaValid) {
         if (croppingAreaValid) {
-            [weakSelf.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"right navigation button title in the crop view controller") style:UIBarButtonItemStylePlain target:weakSelf action:@selector(completeCroppingAction)] animated:YES];
+            [weakSelf.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:ALLocalizedString(@"Done", @"right navigation button title in the crop view controller", self.cordovaConfig.languageKey) style:UIBarButtonItemStylePlain target:weakSelf action:@selector(completeCroppingAction)] animated:YES];
         } else {
             [weakSelf.navigationItem setRightBarButtonItem:nil animated:YES];
             

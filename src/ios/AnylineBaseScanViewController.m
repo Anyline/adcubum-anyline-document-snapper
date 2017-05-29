@@ -17,6 +17,8 @@
         _delegate = delegate;
         _conf = conf;
         _cordovaConfig = cordovaConf;
+        
+        [UINavigationBar appearance].tintColor = [UIColor whiteColor];
     }
     return self;
 }

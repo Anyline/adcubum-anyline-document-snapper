@@ -13,22 +13,26 @@
 #import "ALDocumentScanner/ALDocumentOverviewViewController.h"
 #import "ALDocumentScanner/ALResultDocument.h"
 #import "ALRoundedView.h"
+#import "ALManualTriggerButton.h"
+#import "ALLocalizationMacro.h"
 
 static CGFloat const kLabelSidePadding =                                20;
 static CGFloat const kLabelTopPadding =                                 115;
 static CGFloat const kLabelHeight =                                     30;
 
-@interface AnylineDocumentScanViewController ()<AnylineDocumentModuleDelegate, ALDocumentCropViewControllerDelegate, ALDocumentOverviewViewControllerDelegate>
 
+@interface AnylineDocumentScanViewController ()<AnylineDocumentModuleDelegate, ALDocumentCropViewControllerDelegate, ALDocumentOverviewViewControllerDelegate>
 @property (nonatomic, strong) ALRoundedView *roundedView;
 @property (nonatomic, strong) ALRoundedView *processingLabel;
 
 @property (nonatomic, assign) NSInteger showingLabel;
 
-@property (nonatomic, strong) IBOutlet UIButton *triggerCameraButton;
+@property (nonatomic, strong) IBOutlet ALManualTriggerButton *triggerCameraButton;
 @property (nonatomic, strong) NSMutableArray<ALResultPage *> *scannedPages;
 
 @property (strong, nonatomic) NSTimer *scanDelayDebouncer;
+
+@property (strong, nonatomic) NSTimer *triggerCameraButtonTimeout;
 
 @end
 
@@ -66,17 +70,19 @@ static CGFloat const kLabelHeight =                                     30;
         
         
         if (self.hasManualCrop) {
-            self.triggerCameraButton = [[UIButton alloc] initWithFrame:CGRectMake(self.moduleView.center.x-25, self.moduleView.bounds.size.height-56, 52, 52)];
-            [self.triggerCameraButton setImage:[UIImage imageNamed:@"cam_trigger"] forState:UIControlStateNormal];
+            self.triggerCameraButton = [[ALManualTriggerButton alloc] initWithFrame:CGRectMake(self.moduleView.center.x-25, self.moduleView.bounds.size.height-56, 52, 52) tintColor:self.cordovaConfig.manualScanButtonColor];
+//            self.triggerCameraButton.color = self.cordovaConfig.manualScanButtonColor;
             
             [self.triggerCameraButton addTarget:self action:@selector(onManualTrigger:) forControlEvents:UIControlEventTouchUpInside];
             [self.view addSubview:self.triggerCameraButton];
+            
+            [self resetTriggerButtonTimer];
         }
         
         if (self.isMultipage) {
             //Will show page number and continue to next step (Overview/Gallerie)
             UIBarButtonItem *pageButton = [[UIBarButtonItem alloc]
-                                           initWithTitle:NSLocalizedString(@"0 Pages", @"Page Counter without pages")
+                                           initWithTitle:ALLocalizedString(@"0 Pages", @"Page Counter without pages", self.cordovaConfig.languageKey)
                                            style:UIBarButtonItemStylePlain
                                            target:self
                                            action:@selector(onFinishScanning:)];
@@ -84,7 +90,7 @@ static CGFloat const kLabelHeight =                                     30;
             self.navigationItem.rightBarButtonItem = pageButton;
             
             UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
-                                             initWithTitle:NSLocalizedString(@"Cancel", @"Cancel deletion left navigation button title in the crop view controller")
+                                             initWithTitle:ALLocalizedString(@"Cancel", @"Cancel title", self.cordovaConfig.languageKey)
                                              style:UIBarButtonItemStylePlain
                                              target:self
                                              action:@selector(cancelButtonPressed:)];
@@ -104,7 +110,7 @@ static CGFloat const kLabelHeight =                                     30;
             self.processingLabel.textLabel.numberOfLines = 1;
             self.processingLabel.textLabel.minimumScaleFactor = 0.5;
             
-            self.processingLabel.textLabel.text = NSLocalizedString(@"Processing", @"Processing label title");
+            self.processingLabel.textLabel.text = ALLocalizedString(@"Processing", @"Processing label title", self.cordovaConfig.languageKey);
             self.processingLabel.alpha = 0;
             [self.view addSubview:self.processingLabel];
             
@@ -156,6 +162,7 @@ static CGFloat const kLabelHeight =                                     30;
 
 
 - (void)_startScanDebounce {
+    [self resetTriggerButtonTimer];
     // cancel any pending delayed execution
     [self _cancelScanDebounce];
     
@@ -165,6 +172,7 @@ static CGFloat const kLabelHeight =                                     30;
 
 
 - (void)_startScanning {
+    [self resetTriggerButtonTimer];
     /*
      This is the place where we tell Anyline to start receiving and displaying images from the camera.
      Success/error tells us if everything went fine.
@@ -173,10 +181,10 @@ static CGFloat const kLabelHeight =                                     30;
     BOOL success = [self.moduleView startScanningAndReturnError:&error];
     if (!success) {
         // Something went wrong. The error object contains the error description
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Start Scanning Error", @"Title for the alert view if the scanner start action fails")
+        [[[UIAlertView alloc] initWithTitle:ALLocalizedString(@"Start Scanning Error", @"Title for the alert view if the scanner start action fails", self.cordovaConfig.languageKey)
                                     message:error.debugDescription
                                    delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"Title for the alert view dismiss button for failed scan action start")
+                          cancelButtonTitle:ALLocalizedString(@"OK", @"Title for the alert view dismiss button for failed scan action start", self.cordovaConfig.languageKey)
                           otherButtonTitles:nil] show];
     }
 }
@@ -189,10 +197,10 @@ static CGFloat const kLabelHeight =                                     30;
         BOOL success = [self.moduleView cancelScanningAndReturnError:&error];
         if (!success) {
             // Something went wrong. The error object contains the error description
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Scanning Error", @"Title for the alert view if the scanner cancel action fails")
+            [[[UIAlertView alloc] initWithTitle:ALLocalizedString(@"Cancel Scanning Error", @"Title for the alert view if the scanner cancel action fails", self.cordovaConfig.languageKey)
                                         message:error.debugDescription
                                        delegate:self
-                              cancelButtonTitle:NSLocalizedString(@"OK", @"Title for the alert view dismiss button for failed scan action start")
+                              cancelButtonTitle:ALLocalizedString(@"OK", @"Title for the alert view dismiss button for failed scan action start", self.cordovaConfig.languageKey)
                               otherButtonTitles:nil] show];
         }
     }
@@ -227,7 +235,7 @@ static CGFloat const kLabelHeight =                                     30;
     
     ALResultPage *scannedPage = [[ALResultPage alloc] initWithOriginalImage:image imageCorners:corners];
     
-    ALDocumentCropViewController *cropVC = [[ALDocumentCropViewController alloc] initWithPage:scannedPage];
+    ALDocumentCropViewController *cropVC = [[ALDocumentCropViewController alloc] initWithPage:scannedPage cordovaConfiguration:self.cordovaConfig];
     cropVC.delegate = self;
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cropVC];
     [nav.navigationBar setBarTintColor:self.navigationController.navigationBar.barTintColor];
@@ -311,7 +319,7 @@ static CGFloat const kLabelHeight =                                     30;
 
 - (void)updateResultDictionaryWithPage: (ALResultPage *)page {
     [self.scannedPages addObject:page];
-    NSString * pageCounter = [NSString stringWithFormat:NSLocalizedString(@"%lu Pages", @"Page count"), (self.scannedPages.count)];
+    NSString * pageCounter = [NSString stringWithFormat:ALLocalizedString(@"%lu Pages", @"Page count", self.cordovaConfig.languageKey), (self.scannedPages.count)];
     [self.navigationItem.rightBarButtonItem setTitle:pageCounter];
 }
 
@@ -322,16 +330,17 @@ static CGFloat const kLabelHeight =                                     30;
     NSString *helpString = nil;
     switch (error) {
         case ALDocumentErrorNotSharp:
-            helpString = NSLocalizedString(@"Document not Sharp", @"Document not sharp warning");
+            helpString = ALLocalizedString(@"Document not Sharp", @"Document not sharp warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorSkewTooHigh:
-            helpString = NSLocalizedString(@"Wrong Perspective", @"Document has wrong perspective warning");
+            helpString = ALLocalizedString(@"Wrong Perspective", @"Document has wrong perspective warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorImageTooDark:
-            helpString = NSLocalizedString(@"Too Dark", @"Document is too dark warning");
+            helpString = ALLocalizedString(@"Too Dark", @"Document is too dark warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorShakeDetected:
-            helpString = NSLocalizedString(@"Too much shaking", @"Device is shaking too much warning");
+            helpString = ALLocalizedString(@"Too much shaking", @"Device is shaking too much warning", self.cordovaConfig.languageKey);
+            [self resetTriggerButtonTimer];
             break;
         default:
             break;
@@ -359,6 +368,14 @@ static CGFloat const kLabelHeight =                                     30;
     }];
 }
 
+- (void)resetTriggerButtonTimer {
+    [self.triggerCameraButtonTimeout invalidate];
+    self.triggerCameraButton.mode = ALManualCropButtonModeSearching;
+    self.triggerCameraButtonTimeout = [NSTimer scheduledTimerWithTimeInterval:3 repeats:NO block:^(NSTimer * _Nonnull timer) {
+        self.triggerCameraButton.mode = ALManualCropButtonModePhoto;
+    }];
+}
+
 #pragma mark - IBAction
 
 - (IBAction)onManualTrigger:(id)sender {
@@ -366,11 +383,11 @@ static CGFloat const kLabelHeight =                                     30;
 }
 
 - (IBAction)onFinishScanning:(id)sender {
-    ALDocumentOverviewViewController *vc = [[ALDocumentOverviewViewController alloc]
-                                            initWithAnylineLicenseKey:self.key
-                                            documentSubject:@""
-                                            delegate:self
-                                            scannedPages:self.scannedPages];
+    ALDocumentOverviewViewController *vc = [[ALDocumentOverviewViewController alloc] initWithAnylineLicenseKey:self.key
+                                                                                               documentSubject:@""
+                                                                                                      delegate:self
+                                                                                          cordovaConfiguration:self.cordovaConfig
+                                                                                                  scannedPages:self.scannedPages];
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     [nav.navigationBar setBarTintColor:self.navigationController.navigationBar.barTintColor];
@@ -381,14 +398,14 @@ static CGFloat const kLabelHeight =                                     30;
 
 - (void)cancelButtonPressed:(id)sender {
         __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning")
-                                                                         message:NSLocalizedString(@"Are you sure you want to exit? Every Scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)")
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"Are you sure you want to exit? Every Scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Continue scanning", @"Continue scanning") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Continue scanning", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel scanning") style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Cancel", @"Cancel scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         [weakSelf _abortScanningAnimated:YES];
     }]];
     

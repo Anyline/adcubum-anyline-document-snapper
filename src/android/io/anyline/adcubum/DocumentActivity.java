@@ -3,19 +3,22 @@ package io.anyline.adcubum;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.drawable.GradientDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -25,11 +28,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +41,8 @@ import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.camera.CameraController;
 import at.nineyards.anyline.camera.CameraOpenListener;
 import at.nineyards.anyline.models.AnylineImage;
-import at.nineyards.anyline.modules.document.DocumentResultListener;
 import at.nineyards.anyline.modules.document.DocumentResult;
+import at.nineyards.anyline.modules.document.DocumentResultListener;
 import at.nineyards.anyline.modules.document.DocumentScanView;
 import io.anyline.adcubum.util.FileUtil;
 import io.anyline.adcubum.util.MiscUtil;
@@ -51,6 +55,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private static final String TAG = DocumentActivity.class.getSimpleName();
 
+
+    public static Handler mManualButtonHandler = new Handler();
     private static final int CROP_DOCUMENT_REQUEST = 3;
     private static final String FULL_IMAGE_POSTFIX = "-Full.jpg";
     private static final String STATE_FILE_ID = "STATE_FILE_ID";
@@ -59,8 +65,6 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private static final String SAVE_STATE_INTERMEDIATE_PAGES = "SAVE_STATE_INTERMEDIATE_PAGES";
 
     public static final String RESULT_TRANSFORM = "RESULT_TRANSFORM";
-    public static final String INITIAL_THUMBNAIL_PATH = "INITIAL_THUMBNAIL_PATH";
-    public static final String INITIAL_THUMBNAIL_COUNT = "INITIAL_THUMBNAIL_COUNT";
     public static final String SESSION_FOLDER_ORIGINALS = "ok";
     public static final String SESSION_FOLDER_ERROR = "error";
     public static final String TRANSFORMED_IMAGE_POSTFIX = "-Transformed.jpg";
@@ -76,7 +80,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private ImageView imageViewFull;
     private TextView errorMessage;
     private ImageView triggerManualButton;
-    private ImageView cancelScanAction;
+    private AVLoadingIndicatorView searchingButton;
+    private GradientDrawable triggerManualshape;
 
     private ArrayList<PointF> corners;
     private File toTransformFullImageFile;
@@ -85,18 +90,21 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private ObjectAnimator errorMessageAnimator;
     private Toast notificationToast;
 
-    private List<PointF> lastOutline;
-    private int successfulScanCounter = 0;
-    private boolean manualTriggeredImage = false;
     private long lastErrorRecieved = 0;
     private boolean cropRequested = false;
     private int initialScanCount = 0;
     private JSONObject jsonConfig;
-    private View toolbar;
+    private int manualScanButtonStartDuration;
 
     private android.os.Handler handler = new android.os.Handler();
 
     private String fileId;
+
+    //Sensors
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private Sensor mRotationVector;
+
 
     public int getAppResource(String name, String type) {
         return getResources().getIdentifier(name, type, getPackageName());
@@ -121,9 +129,34 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
     };
 
+    private Runnable setManualScanButton = new Runnable() {
+        @Override
+        public void run() {
+            searchingButton.hide();
+            triggerManualButton.setVisibility(View.VISIBLE);
+        }
+    };
+
 
     private void errorMessageCleanupDelayed(int delayResourceId) {
         handler.postDelayed(errorMessageCleanup, getResources().getInteger(delayResourceId));
+    }
+
+    public void startManualButtonTimer() {
+        mManualButtonHandler.postDelayed(setManualScanButton, manualScanButtonStartDuration);
+    }
+
+    public void stopManualButtonTimer() {
+        mManualButtonHandler.removeCallbacks(setManualScanButton);
+    }
+
+    public void restartManualButtonTimer() {
+        if (searchingButton.getVisibility() != View.VISIBLE) {
+            searchingButton.smoothToShow();
+            triggerManualButton.setVisibility(View.GONE);
+        }
+        mManualButtonHandler.removeCallbacks(setManualScanButton);
+        mManualButtonHandler.postDelayed(setManualScanButton, manualScanButtonStartDuration);
     }
 
 
@@ -134,7 +167,6 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         //Set the flag to keep the screen on (otherwise the screen may go dark during scanning)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-
         //restore intermediate Scans if Activity was killed during cropping
         if (savedInstanceState != null && savedInstanceState.containsKey(SAVE_STATE_INTERMEDIATE_PAGES)) {
             this.scanPagesForResult = savedInstanceState.getParcelableArrayList(SAVE_STATE_INTERMEDIATE_PAGES);
@@ -143,22 +175,29 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
 
         initialScanCount = scanPagesForResult.size();
-
         initActivityState(savedInstanceState);
 
         try {
             jsonConfig = new JSONObject(configJson);
+            this.manualScanButtonStartDuration = Integer.parseInt(jsonConfig.getString("manualScanButtonStartDuration"));
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
+            this.manualScanButtonStartDuration = 3;
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
             return;
         }
 
+
         findViewsById();
         updateScanCount();
+        startManualButtonTimer();
+
+        setStyleOfSearchAndScanButton();
+        searchingButton.smoothToShow();
+        triggerManualButton.setVisibility(View.GONE);
+
+
         documentScanView.setCameraOpenListener(this);
-
-
 
         documentScanView.setConfig(new AnylineViewConfig(this, jsonConfig));
 
@@ -265,7 +304,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             public boolean onDocumentOutlineDetected(List<PointF> list, boolean documentShapeAndBrightnessValid) {
                 // is called when the outline of the document is detected. return true if the outline is consumed by
                 // the implementation here, false if the outline should be drawn by the DocumentScanView
-                lastOutline = list; // saving the outline for the animations
+                List<PointF> lastOutline = list; // saving the outline for the animations
                 return false;
             }
 
@@ -309,7 +348,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     }
 
     private void updateScanCount() {
-        successfulScanCounter = this.scanPagesForResult.size();
+        int successfulScanCounter = this.scanPagesForResult.size();
         Log.d(TAG, "successfulScanCounter:" + successfulScanCounter +
                 " initialScanCount:" + initialScanCount +
                 " mScanPagesForResult:" + this.scanPagesForResult.size());
@@ -343,6 +382,21 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         return FileUtil.saveImage(outDirUi, filenameUi, transformedImage);
     }
 
+    private void setStyleOfSearchAndScanButton() {
+        triggerManualshape = new GradientDrawable();
+        triggerManualshape.setShape(GradientDrawable.OVAL);
+
+        try {
+            triggerManualshape.setColor(Color.parseColor("#" + jsonConfig.getString("manualScanButtonColor")));
+        } catch (JSONException e) {
+            triggerManualshape.setColor(Color.parseColor("#004583"));
+            e.printStackTrace();
+        }
+        triggerManualButton.setBackgroundDrawable(triggerManualshape);
+        searchingButton.setBackgroundDrawable(triggerManualshape);
+
+    }
+
 
     private void findViewsById() {
 
@@ -350,7 +404,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         documentScanView = (DocumentScanView) findViewById(getResources().getIdentifier("document_scan_view", "id", getPackageName()));
         errorMessageLayout = (FrameLayout) findViewById(getResources().getIdentifier("error_message_layout", "id", getPackageName()));
         errorMessage = (TextView) findViewById(getResources().getIdentifier("error_message", "id", getPackageName()));
-        toolbar = (Toolbar) findViewById(getResources().getIdentifier("scan_toolbar", "id", getPackageName()));
+        View toolbar = (Toolbar) findViewById(getResources().getIdentifier("scan_toolbar", "id", getPackageName()));
 
         triggerManualButton = (ImageView) findViewById(getResources().getIdentifier("manual_trigger_button", "id", getPackageName()));
         triggerManualButton.setOnClickListener(new View.OnClickListener() {
@@ -358,14 +412,26 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             public void onClick(View view) {
                 Log.d(TAG, "triggerPictureCornerDetection");
                 stopScanning(true);
-                documentScanView.triggerPictureCornerDetection();// triggers corner detection -> callback on onPictureCornersDetected
+                documentScanView.triggerPictureCornerDetection(); // triggers corner detection -> callback on onPictureCornersDetected
                 showProgressDialog();
-                manualTriggeredImage = true;
             }
         });
 
+
+        searchingButton = (AVLoadingIndicatorView) findViewById(getResources().getIdentifier("searching_button", "id", getPackageName()));
+        searchingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "triggerPictureCornerDetection");
+                stopScanning(true);
+                documentScanView.triggerPictureCornerDetection(); // triggers corner detection -> callback on onPictureCornersDetected
+                showProgressDialog();
+            }
+        });
+
+
         try {
-            TOOLBARCOLOR = Color.parseColor(jsonConfig.getJSONObject("multipage").getString("multipageTintColor"));
+            TOOLBARCOLOR = Color.parseColor("#" + jsonConfig.getJSONObject("multipage").getString("multipageTintColor"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -379,7 +445,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                 finishAndReturnResult();
             }
         });
-        cancelScanAction = (ImageView) findViewById(getResources().getIdentifier("cancel_scan_action", "id", getPackageName()));
+        ImageView cancelScanAction = (ImageView) findViewById(getResources().getIdentifier("cancel_scan_action", "id", getPackageName()));
         cancelScanAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -423,7 +489,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private File saveFullImageToDisk(AnylineImage fullImage) {
         File outDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), SESSION_FOLDER_ORIGINALS);
-        if(!outDir.exists()){
+        if (!outDir.exists()) {
             outDir.mkdir();
         }
         String filename = "" + fileId + FULL_IMAGE_POSTFIX;
@@ -485,6 +551,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                 break;
             case SHAKE_DETECTED:
                 text += getString(getResources().getIdentifier("document_error_shake", "string", getPackageName()));
+                restartManualButtonTimer();
                 break;
             case DOCUMENT_BOUNDS_OUTSIDE_OF_TOLERANCE:
                 text += getString(getResources().getIdentifier("document_error_closer", "string", getPackageName()));
@@ -520,8 +587,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             handler.post(errorMessageCleanup);
         }
         lastErrorRecieved = System.currentTimeMillis();
-        if (errorMessageAnimator != null && (errorMessageAnimator.isRunning() || errorMessage.getText().equals
-                (message))) {
+        if (errorMessageAnimator != null && (errorMessageAnimator.isRunning() || errorMessage.getText().equals(message))) {
             return;
         }
 
@@ -557,13 +623,17 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     private void startScanning() {
         Log.d(TAG, "startScanning");
         triggerManualButton.setEnabled(true);
+        searchingButton.setEnabled(true);
         documentScanView.startScanning();
     }
 
 
     private void stopScanning(boolean disableManualScanButton) {
         Log.d(TAG, "stopScanning");
-        if (disableManualScanButton) triggerManualButton.setEnabled(false);
+        if (disableManualScanButton) {
+            triggerManualButton.setEnabled(false);
+            searchingButton.setEnabled(false);
+        }
         documentScanView.cancelScanning();
     }
 
@@ -592,8 +662,9 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     protected void onResume() {
         super.onResume();
         closeProgressDialog();
+        restartManualButtonTimer();
         handler.post(errorMessageCleanup);
-        if(!cropRequested) {
+        if (!cropRequested) {
             startScanning();
         }
     }
@@ -603,6 +674,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         super.onPause();
         //stop the scanning
         stopScanning(true);
+        stopManualButtonTimer();
+
         //release the camera (must be called in onPause, because there are situations where
         // it cannot be auto-detected that the camera should be released)
         documentScanView.releaseCameraInBackground();
@@ -612,7 +685,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     protected void onDestroy() {
         super.onDestroy();
         closeProgressDialog();
-
+        stopManualButtonTimer();
         handler.removeCallbacks(errorMessageCleanup);
     }
 
@@ -638,13 +711,12 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         Log.d(TAG, "fullImageFile Path:" + fullImageFile.getAbsolutePath() + " corners: " + corners.toString());
 
         File targetDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), DocumentActivity.SESSION_FOLDER_TRANSFORMED);
-        if(!targetDir.exists()){
+        if (!targetDir.exists()) {
             targetDir.mkdir();
         }
         String filename = "" + System.currentTimeMillis() + "" + DocumentActivity.TRANSFORMED_IMAGE_POSTFIX;
         final File outFile = new File(targetDir, filename);
         showProgressDialog();
-        manualTriggeredImage = false;
         stopScanning(true);
 
         Log.d(TAG, "TransformationUtil.doTransformation");
@@ -719,5 +791,3 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         outState.putParcelableArrayList(SAVE_STATE_INTERMEDIATE_PAGES, this.scanPagesForResult);
     }
 }
-
-

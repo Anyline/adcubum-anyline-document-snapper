@@ -70,9 +70,9 @@ anyline.document = {
         },
         "flash": {
             "mode": "manual",
-            "alignment": "bottom_left",
+            "alignment": "bottom_right",
             "offset": {
-                "x": 10,
+                "x": 0,
                 "y": 0
             }
         },
@@ -88,11 +88,17 @@ anyline.document = {
         "cancelOnResult": true,
         "multipage": {
             "multipageEnabled": true,
-            "multipageTintColor": "#004583",
+            "multipageTintColor": "FF004583",
             "multipageTranslucent": false
         },
-        "manualCrop": true
+        "manualCrop": true,
 
+        // Hex Color Code as String
+        "manualScanButtonColor" : "FF004583",
+        // Integer
+        "manualScanButtonStartDuration" : 3000,
+
+        "languageKey" : "de"
     },
 
     scan: function () {
