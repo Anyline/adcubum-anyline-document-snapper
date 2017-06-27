@@ -31,6 +31,8 @@
         self.textLabel.backgroundColor = [UIColor clearColor];
         self.textLabel.textAlignment = NSTextAlignmentCenter;
         self.textLabel.textColor = [UIColor whiteColor];
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.numberOfLines = 0;
         self.textLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         [self addSubview:self.textLabel];
     }

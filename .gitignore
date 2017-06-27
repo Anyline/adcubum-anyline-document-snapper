@@ -1,5 +1,8 @@
 build
 dist
+example/platforms
+example/plugins
+example/node_modules
 **/.DS_Store
 .idea
 *.ipr
