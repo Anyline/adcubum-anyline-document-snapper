@@ -30,7 +30,7 @@
 /* Title for document scanner VC */
 "Scan" = "Scannen";
 /* Title for the alert view if the scanner start action fails */
-"Start Scanning Error" = "Start Scannen Fehler";
+"Start Scanning Error" = "Scan kann nicht gestartet werden.";
 /* Document is too dark warning */
 "Too Dark" = "Bild ist zu dunkel";
 /* Device is shaking too much warning */
