@@ -24,6 +24,8 @@ android {
   }
 
   packagingOptions {
+    // The Anyline SDK ships with its own version of the GNU STL library. This might cause a conflict with other included libraries.
+    pickFirst('lib/*/libgnustl_shared.so')
     exclude 'META-INF/NOTICE'
     exclude 'META-INF/LICENSE'
   }
