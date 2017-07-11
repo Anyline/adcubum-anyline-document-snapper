@@ -352,14 +352,15 @@ public class OverviewActivity extends AppCompatActivity {
             return;
         }
         if (tab.getPosition() == 0) {
-            deletePage();
+           startCropActivity();
         } else if (tab.getPosition() == 1) {
-            startCropActivity();
-        } else if (tab.getPosition() == 2) {
             rotateCurrentPage();
-        } else if (tab.getPosition() == 3) {
+        } else if (tab.getPosition() == 2) {
             startDocumentScanActivity();
         }
+//        else if (tab.getPosition() == 3) {
+//            startDocumentScanActivity();
+//        }
     }
 
     private void startCropActivity() {
@@ -398,7 +399,9 @@ public class OverviewActivity extends AppCompatActivity {
     private void startDocumentScanActivity() {
         Intent data = new Intent();
 
-        data.putExtra(DocumentActivity.RESULT_PAGES, (ArrayList) mAdapter.getAllScanPages());
+        // enable multiPageScanning!
+        // data.putExtra(DocumentActivity.RESULT_PAGES, (ArrayList) mAdapter.getAllScanPages());
+
         this.setResult(AnylinePlugin.RESULT_SWITCH, data);
         finish();
     }

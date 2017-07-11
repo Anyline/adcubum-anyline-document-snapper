@@ -87,7 +87,7 @@ anyline.document = {
         "blinkAnimationOnResult": true,
         "cancelOnResult": true,
         "multipage": {
-            "multipageEnabled": true,
+            "multipageEnabled": false,
             "multipageTintColor": "FF004583",
             "multipageTranslucent": false
         },

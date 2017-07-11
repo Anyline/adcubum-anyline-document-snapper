@@ -24,6 +24,7 @@
  */
 - (void)documentScanner:(nonnull ALDocumentOverviewViewController *)documentScannerVC didFinishScanWithResult:(nonnull ALResultDocument *)result;
 - (void)documentScannerDidAbort:(nonnull ALDocumentOverviewViewController *)documentScannerVC;
+- (void)documentScannerDeleteAllPages;
 
 @end
 

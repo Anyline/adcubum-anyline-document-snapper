@@ -224,6 +224,7 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
  *  @param sender
  */
 - (IBAction)addNewPageToDocumentAction:(id)sender {
+    [self.delegate documentScannerDeleteAllPages];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -299,6 +300,9 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
     [self presentViewController:actionSheet animated:YES completion:nil];
     
 }
+
+
+
 
 - (IBAction)cancelScanning:(id)sender {
     __weak __typeof(self) weakSelf = self;

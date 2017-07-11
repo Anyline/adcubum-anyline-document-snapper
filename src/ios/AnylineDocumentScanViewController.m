@@ -62,7 +62,7 @@ static CGFloat const kLabelHeight =                                     30;
         [self.view sendSubviewToBack:self.moduleView];
         
         // This view notifies the user of any problems that occur while he is scanning
-        self.roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, self.view.bounds.size.width - 40, 60)];
+        self.roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, self.view.bounds.size.width - 40, 30)];
         self.roundedView.fillColor = [UIColor colorWithRed:98.0/255.0 green:39.0/255.0 blue:232.0/255.0 alpha:0.6];
         self.roundedView.textLabel.text = @"";
         self.roundedView.alpha = 0;
@@ -80,15 +80,6 @@ static CGFloat const kLabelHeight =                                     30;
         }
         
         if (self.isMultipage) {
-            //Will show page number and continue to next step (Overview/Gallerie)
-            UIBarButtonItem *pageButton = [[UIBarButtonItem alloc]
-                                           initWithTitle:ALLocalizedString(@"0 Pages", @"Page Counter without pages", self.cordovaConfig.languageKey)
-                                           style:UIBarButtonItemStylePlain
-                                           target:self
-                                           action:@selector(onFinishScanning:)];
-            
-            self.navigationItem.rightBarButtonItem = pageButton;
-            
             UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc]
                                              initWithTitle:ALLocalizedString(@"Cancel", @"Cancel title", self.cordovaConfig.languageKey)
                                              style:UIBarButtonItemStylePlain
@@ -149,8 +140,8 @@ static CGFloat const kLabelHeight =                                     30;
         [self updateResultDictionaryWithPage:[[ALResultPage alloc] initWithOriginalImage:fullFrame imageCorners:corners]];
         
         // stops scanning and schedules the scanning to restart after our timeout. in case the view disappears the debounce is cleaned up and the scanner is restarted when the view appears again
-        [self _startScanDebounce];
-    }
+        //[self _startScanDebounce];
+        [self onFinishScanning:nil];    }
     
 }
 
@@ -271,12 +262,15 @@ static CGFloat const kLabelHeight =                                     30;
  */
 - (void)cropViewControllerDidFinishCropping:(ALDocumentCropViewController *)cropVC withResult:(ALResultPage *)resultPage {
     [self updateResultDictionaryWithPage:resultPage];
+    [self onFinishScanning:nil];
 }
 
 /*
- Delegate method will receive an ALReslutDocument form the Overview/Gallerie. It contains a ALResultPage per image.
+ Delegate method will receive an ALResultDocument form the Overview/Gallerie. It contains a ALResultPage per image.
  */
 - (void)documentScanner:(ALDocumentOverviewViewController *)documentScannerVC didFinishScanWithResult:(ALResultDocument *)result {
+    
+    
     
     [(AnylineDocumentModuleView *) self.moduleView stopListeningForMotion];
     [(AnylineDocumentModuleView *) self.moduleView cancelScanningAndReturnError:nil];
@@ -319,8 +313,6 @@ static CGFloat const kLabelHeight =                                     30;
 
 - (void)updateResultDictionaryWithPage: (ALResultPage *)page {
     [self.scannedPages addObject:page];
-    NSString * pageCounter = [NSString stringWithFormat:ALLocalizedString(@"%lu Pages", @"Page count", self.cordovaConfig.languageKey), (self.scannedPages.count)];
-    [self.navigationItem.rightBarButtonItem setTitle:pageCounter];
 }
 
 /*
@@ -414,6 +406,11 @@ static CGFloat const kLabelHeight =                                     30;
 
 - (void)documentScannerDidAbort:(nonnull ALDocumentOverviewViewController *)documentScannerVC; {
     [self _abortScanningAnimated:YES];
+}
+
+
+- (void)documentScannerDeleteAllPages {
+    self.scannedPages = [[NSMutableArray alloc] init];
 }
 
 - (void)_abortScanningAnimated:(BOOL)animated {

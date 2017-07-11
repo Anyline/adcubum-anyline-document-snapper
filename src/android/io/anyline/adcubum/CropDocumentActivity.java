@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.WindowManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,6 +50,9 @@ public class CropDocumentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
+
         setContentView(getResources().getIdentifier("activity_crop", "layout", getPackageName()));
         document = (ImageView) findViewById(getResources().getIdentifier("crop_activity_image", "id", getPackageName()));
         cropView = (TetragonView) findViewById(getResources().getIdentifier("tetragon_view", "id", getPackageName()));

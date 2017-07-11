@@ -166,6 +166,7 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         setContentView(getResources().getIdentifier("activity_scan_document", "layout", getPackageName()));
         //Set the flag to keep the screen on (otherwise the screen may go dark during scanning)
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
         //restore intermediate Scans if Activity was killed during cropping
         if (savedInstanceState != null && savedInstanceState.containsKey(SAVE_STATE_INTERMEDIATE_PAGES)) {
@@ -247,7 +248,16 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
                     Log.e(TAG, "Error while putting image path to json.", jsonException);
                 }
 
-                startScanningDelayed(getResources().getIdentifier("delay_after_successful_scan", "integer", getPackageName()));
+                try{
+
+                    if(Boolean.parseBoolean(jsonConfig.getJSONObject("multipage").getString("multipageEnabled"))){
+                        startScanningDelayed(getResources().getIdentifier("delay_after_successful_scan", "integer", getPackageName()));
+                    } else {
+                        finishAndReturnResult();
+                    }
+                }catch (JSONException e){
+                     e.printStackTrace();
+                }
 
             }
 
@@ -341,7 +351,6 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private void saveResultForReturn(String filenameOriginalImage, String filenameTransformedImage, List<PointF> corners) {
         Log.d(TAG, "saveResultForReturn:" + filenameTransformedImage);
-        closeProgressDialog();
         ScanPage scanPage = new ScanPage(filenameOriginalImage, filenameTransformedImage, (ArrayList<PointF>) corners);
         scanPagesForResult.add(scanPage);
         fileId += 1;
@@ -704,6 +713,9 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
     }
 
     private void transformFullImage(final File fullImageFile, final ArrayList<PointF> corners) {
+
+        showProgressDialog();
+        stopScanning(true);
         toTransformFullImageFile = fullImageFile;
         if (!toTransformFullImageFile.exists())
             Log.w(TAG, "mToTransformFullImageFile file does not exist!");
@@ -716,8 +728,6 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
         String filename = "" + System.currentTimeMillis() + "" + DocumentActivity.TRANSFORMED_IMAGE_POSTFIX;
         final File outFile = new File(targetDir, filename);
-        showProgressDialog();
-        stopScanning(true);
 
         Log.d(TAG, "TransformationUtil.doTransformation");
         new AsyncTask<Void, Void, Void>() {
@@ -738,17 +748,17 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
     private void onTransformDone(File outFile) {
 
-        closeProgressDialog();
         if (outFile != null) {
             Log.d(TAG, "transformed picture saved:" + outFile.getAbsolutePath());
             String fullImagePath = toTransformFullImageFile.getAbsolutePath();
             saveResultForReturn(fullImagePath, outFile.getAbsolutePath(), corners);
-            updateScanCount();
+            finishAndReturnResult();
         } else {
             Log.d(TAG, "transformed picture not saved " + outFile);
         }
         cropRequested = false;
-        startScanningDelayed(getResources().getIdentifier("delay_after_successful_scan", "integer", getPackageName()));
+//        startScanningDelayed(getResources().getIdentifier("delay_after_successful_scan", "integer", getPackageName()));
+
     }
 
 

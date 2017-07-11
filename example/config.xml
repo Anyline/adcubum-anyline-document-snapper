@@ -5,4 +5,8 @@
     <content src="index.html" />
     <access origin="*" />
     <icon src="www/img/ic_launcher.png" />
+    <preference name="BackupWebStorage" value="local" />
+    <engine name="android" spec="git+https://github.com/apache/cordova-android.git" />
+    <engine name="ios" spec="^4.4.0" />
+    <plugin name="io-anyline-adcubum" spec="file:///Users/jonesBoi/Anyline/Adcubum/adcubum-cordova-plugin" />
 </widget>

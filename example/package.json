@@ -1,22 +1,30 @@
 {
-  "name": "adcubum-document-snapper",
-  "version": "0.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-adcubum && cordova platform add https://github.com/apache/cordova-android && cordova plugin add ../",
-    "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-adcubum && cordova platform add ios && cordova plugin add ../",
-    "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
-    "OandR": "npm run overwrite && npm run reinstall"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cordova-cli": "^6.4.0"
-  },
-  "cordova": {
-    "platforms": [],
-    "plugins": {}
-  }
+    "name": "adcubum-document-snapper",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "reinstall": "cordova platform remove android && cordova plugin remove io-anyline-adcubum && cordova platform add https://github.com/apache/cordova-android && cordova plugin add ../",
+        "reinstall-ios": "cordova platform remove ios && cordova plugin remove io-anyline-adcubum && cordova platform add ios && cordova plugin add ../",
+        "overwrite": "rm -R ../src/android/io && rm -R ../src/android/res && cp -R platforms/android/src/io ../src/android/ && cp -R platforms/android/res ../src/android",
+        "OandR": "npm run overwrite && npm run reinstall"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cordova-android": "git+https://github.com/apache/cordova-android.git",
+        "cordova-cli": "^6.4.0",
+        "cordova-ios": "^4.4.0",
+        "io-anyline-adcubum": "file:///Users/jonesBoi/Anyline/Adcubum/adcubum-cordova-plugin"
+    },
+    "cordova": {
+        "platforms": [
+            "android",
+            "ios"
+        ],
+        "plugins": {
+            "io-anyline-adcubum": {}
+        }
+    }
 }
