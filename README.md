@@ -2,7 +2,31 @@
 
 Anyline provides an easy-to-use SDK for applications to enable Optical Character Recognition (OCR) on mobile devices.
 
-### Release Notes 0.1.0
+# Versionierung
+
+Das Projekt ist semantisch versioniert.
+
+Auf Grundlage einer Versionsnummer von MAJOR.MINOR.PATCH werden die einzelnen Elemente folgendermassen erhöht:
+- MAJOR wird erhöht, wenn API-inkompatible Änderungen veröffentlicht werden,
+- MINOR wird erhöht, wenn neue Funktionalitäten, welche kompatibel zur bisherigen API sind, veröffentlicht werden, und
+- PATCH wird erhöht, wenn die Änderungen ausschliesslich API-kompatible Bugfixes umfassen.
+
+Weitere Informationen siehe http://semver.org/lang/de/
+Version anpassen oder Release erstellen siehe https://stash.adcubum.com/projects/BLD/repos/bld-release-plugin/browse
+
+# Change log
+Grundlage des Changelogs siehe http://keepachangelog.com/de/0.3.0/
+
+## [Unreleased]
+### Added
+### Changed
+### Removed
+### Fixed
+
+## [1.0.0] - 2017-09-07
+### Fixed - Styling der Navigationsbar über die Cordova Params möglich.
+
+## [0.1.0] - 
 - multipage document Scan flow implemented
 - manual shutter + (semi) manual crop View
 - overview-view to edit / rotate / delete
