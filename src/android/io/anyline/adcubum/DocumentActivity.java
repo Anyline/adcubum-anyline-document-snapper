@@ -446,6 +446,8 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
         }
 
         toolbar.setBackgroundColor(TOOLBARCOLOR);
+        getWindow().setStatusBarColor(DocumentActivity.TOOLBARCOLOR);
+        getWindow().setNavigationBarColor(DocumentActivity.TOOLBARCOLOR);
 
         successfulScanCount = (TextView) findViewById(getResources().getIdentifier("successful_scan_count", "id", getPackageName()));
         successfulScanCount.setOnClickListener(new View.OnClickListener() {

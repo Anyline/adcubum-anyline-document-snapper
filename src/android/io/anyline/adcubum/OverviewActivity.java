@@ -111,6 +111,9 @@ public class OverviewActivity extends AppCompatActivity {
         toolbar = findViewById(getResources().getIdentifier("standart_toolbar", "id", getPackageName()));
 
         toolbar.setBackgroundColor(DocumentActivity.TOOLBARCOLOR);
+        getWindow().setStatusBarColor(DocumentActivity.TOOLBARCOLOR);
+        getWindow().setNavigationBarColor(DocumentActivity.TOOLBARCOLOR);
+
         successfulScanCount = (TextView) findViewById(getResources().getIdentifier("finish_activity", "id", getPackageName()));
         successfulScanCount.setOnClickListener(new View.OnClickListener() {
             @Override

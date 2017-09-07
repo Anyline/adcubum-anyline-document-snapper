@@ -63,6 +63,8 @@ public class CropDocumentActivity extends AppCompatActivity {
         filePath = getIntent().getExtras().getString(CropDocumentActivity.EXTRA_FULL_IMAGE_PATH);
 
         toolbar.setBackgroundColor(DocumentActivity.TOOLBARCOLOR);
+        getWindow().setStatusBarColor(DocumentActivity.TOOLBARCOLOR);
+        getWindow().setNavigationBarColor(DocumentActivity.TOOLBARCOLOR);
 
         ViewTreeObserver vto = document.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
