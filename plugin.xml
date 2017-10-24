@@ -12,7 +12,10 @@
             </feature>
         </config-file>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-            <string>Yes we scan!</string>
+            <string>Used to scan documents</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>Used to personalize your account</string>
         </config-file>
         <!--Cocoapods for iOS Deps-->
         <!--<framework src="NVActivityIndicatorView" type="podspec" spec="~> 1.1.0" uses-framework="true" />-->
