@@ -127,8 +127,8 @@ public class OverviewActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(OverviewActivity.this);
 
-                builder.setTitle("Confirm");
-                builder.setMessage("Are you sure you want to exit? Every Scan will be deleted!");
+                builder.setTitle(getResources().getString(getResources().getIdentifier("confirm", "string", getPackageName())));
+                builder.setMessage(getResources().getString(getResources().getIdentifier("force_cancel_app", "string", getPackageName())));
 
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
