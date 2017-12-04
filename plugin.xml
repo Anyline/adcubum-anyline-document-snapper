@@ -17,6 +17,9 @@
         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
             <string>Used to personalize your account</string>
         </config-file>
+        <config-file target="*-Info.plist" parent="NSMediagiLibraryUsageDescription">
+            <string>Used to personalize your account</string>
+        </config-file>
         <!--Cocoapods for iOS Deps-->
         <!--<framework src="NVActivityIndicatorView" type="podspec" spec="~> 1.1.0" uses-framework="true" />-->
         <!-- Anyline SDK Cordova Plugin Source for iOS -->
