@@ -130,7 +130,7 @@ public class OverviewActivity extends AppCompatActivity {
                 builder.setTitle(getResources().getString(getResources().getIdentifier("confirm", "string", getPackageName())));
                 builder.setMessage(getResources().getString(getResources().getIdentifier("force_cancel_app", "string", getPackageName())));
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getResources().getString(getResources().getIdentifier("yes", "string", getPackageName())), new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int which) {
                         setResult(RESULT_CANCELED);
@@ -139,7 +139,7 @@ public class OverviewActivity extends AppCompatActivity {
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getResources().getString(getResources().getIdentifier("no", "string", getPackageName())), new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
