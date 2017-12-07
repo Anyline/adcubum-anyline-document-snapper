@@ -21,7 +21,7 @@
     <string name="error_unkown_scan_mode">Modalità di scansione sconosciuta:</string>
     <string name="error_invalid_json_data">Configurazione "json" non valida.</string>
     <string name="error_invalid_segment_config">Configurazione "Semgent" non valida. Deve avere lo stesso numero di titoli e modalità.</string>
-    <string name="error_accessing_camera">Errore durante l'accesso alla telecamera.</string>
+    <string name="error_accessing_camera">Errore durante l\'accesso alla telecamera.</string>
     <string name="error_licence_invalid">Errore: licenza "Anyline" non valida.</string>
     <string name="error_occured">Si è verificato un errore.</string>
     <string name="document_advanced_outline_detection">Rilevazione del contorno esteso.</string>
@@ -30,9 +30,9 @@
     <string name="document_error_skew_too_high">Il documento è sbieco. Tenere la fotocamera direttamente sopra il documento.</string>
     <string name="document_error_outline_not_found">Si prega di effetuare la scansione manualmente.</string>
     <string name="document_error_glare_detected">Si prega di rimuovere il babaglio.</string>
-    <string name="document_error_too_dark">L'immagine è troppo oscura.</string>
+    <string name="document_error_too_dark">L\'immagine è troppo oscura.</string>
     <string name="document_error_unknown">Errore sconosciuto.</string>
-    <string name="document_picture_error">Errore durante la scansione dell'intero documento: \n</string>
+    <string name="document_picture_error">Errore durante la scansione dell\'intero documento: \n</string>
     <string name="document_preview_success">Il documento è sbieco. Mantenere la fotocamera ferma.</string>
     <string name="document_picture_success">Documento scansionato con successo.</string>
     <string name="document_using_fast_mode">Passare alla modalità di rilevamento avanzata.</string>
