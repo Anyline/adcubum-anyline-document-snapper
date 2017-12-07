@@ -4,11 +4,11 @@
     <string name="activity_name">@string/launcher_name</string>
     <string name="error_no_subject">Argomento non specificato</string>
     <string name="document_subject">Argomento per documento %1$d</string>
-    <string name="hint_document_subject">Si prega di immettere un'ogetto</string>
+    <string name="hint_document_subject">Si prega di immettere un\'ogetto</string>
     <string name="finished">concluso</string>
     <string name="page">Pagina</string>
     <string name="pages">Pagine</string>
-    <string name="message_empty_document">Il vostro documento è vuoto, é davvero sicuro d'interrompere?</string>
+    <string name="message_empty_document">Il vostro documento è vuoto, é davvero sicuro d\'interrompere?</string>
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="continue_editing">Continuare</string>
