@@ -1,39 +1,39 @@
 /* Page count */
-"%lu Pages" = "%lu Seiten";
+"%lu Pages" = "%lu Pagine";
 /* Page Counter without pages */
-"0 Pages" = "0 Seiten";
+"0 Pages" = "0 Pagine";
 /* Asks the user if he wants to delete an image (title) */
-"Are you sure?" = "Sind Sie sicher?";
+"Are you sure?" = "Sei sicuro?";
 /* Are you sure you want to exit? Every Scan will be deleted!*/
-"Are you sure you want to exit? Every Scan will be deleted!" = "Alle Scans werden gelöscht.";
+"Are you sure you want to exit? Every Scan will be deleted!" = "Ogni scansione sarà cancellata!";
 /* Cancel deletion
  left navigation button title in the crop view controller */
-"Cancel" = "Abbrechen";
+"Cancel" = "Cancella";
 /* Continue scanning */
-"Continue scanning" = "Dokument scannen";
+"Continue scanning" = "Continuare";
 /* Title for the alert view if the scanner cancel action fails */
-"Cancel Scanning Error" = "Abbrechen fehlgeschlagen";
+"Cancel Scanning Error" = "Si è verificato un errore.";
 /* Delete image */
-"Delete" = "Löschen";
+"Delete" = "cancellare";
 /* Asks the user if he wants to delete an image (message) */
-"Do you really want to remove this image?" = "Möchten Sie dieses Bild wirklich entfernen?";
+"Do you really want to remove this image?" = "Vuoi davvero rimuovere questa immagine?";
 /* Document not sharp warning */
-"Document not Sharp" = "Dokument ist unscharf. Halten Sie die Kamera still.";
+"Document not Sharp" = "Il documento è sfocato. Mantenere la fotocamera ferma.";
 /* Done button in document scanner
  right navigation button title in the crop view controller */
-"Done" = "Fertig";
+"Done" = "Eseguito";
 /* Done button title
  Title for the alert view dismiss button for failed scan action start */
 "OK" = "OK";
 /* Processing label title */
-"Processing" = "Wird bearbeitet";
+"Processing" = "Elaborazione del immagine... Attendere prego.";
 /* Title for document scanner VC */
-"Scan" = "Scannen";
+"Scan" = "Scansione";
 /* Title for the alert view if the scanner start action fails */
-"Start Scanning Error" = "Scan kann nicht gestartet werden.";
+"Start Scanning Error" = "Errore durante l'accesso alla telecamera.";
 /* Document is too dark warning */
-"Too Dark" = "Bild ist zu dunkel";
+"Too Dark" = "L'immagine è troppo oscura.";
 /* Device is shaking too much warning */
-"Too much shaking" = "Nicht bewegen";
+"Too much shaking" = "Non muovere";
 /* Document has wrong perspective warning */
-"Wrong Perspective" = "Falsche Perspektive";
+"Wrong Perspective" = "Il documento è sbieco. Tenere la fotocamera direttamente sopra il documento.";

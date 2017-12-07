@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.drawable.GradientDrawable;
@@ -36,6 +37,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import at.nineyards.anyline.camera.AnylineViewConfig;
 import at.nineyards.anyline.camera.CameraController;
@@ -180,14 +182,28 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
 
         try {
             jsonConfig = new JSONObject(configJson);
+
+            //hier die Locale aus der App einlesen und als default locale setzen
+            String langFromUserSetting  = jsonConfig.getString("languageKey");
+            if (langFromUserSetting.length() != 2) {
+              //Default Locale de setzen, wenn über das Anyline-Config
+              langFromUserSetting = "de";
+            }
+            Locale locale = new Locale(langFromUserSetting);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+
             this.manualScanButtonStartDuration = Integer.parseInt(jsonConfig.getString("manualScanButtonStartDuration"));
+
         } catch (Exception e) {
             //JSONException or IllegalArgumentException is possible, return it to javascript
             this.manualScanButtonStartDuration = 3;
             finishWithError(Resources.getString(this, "error_invalid_json_data") + "\n" + e.getLocalizedMessage());
             return;
         }
-
 
         findViewsById();
         updateScanCount();

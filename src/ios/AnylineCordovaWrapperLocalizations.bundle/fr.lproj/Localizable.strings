@@ -1,12 +1,12 @@
 /* Page count */
-"%lu Pages" = "%lu Pages";
+"%lu Pages" = "%lu Pagine";
 /* Page Counter without pages */
-"0 Pages" = "0 Pages";
+"0 Pages" = "0 Pagine";
 /* Asks the user if he wants to delete an image (title) */
-"Are you sure?" = "Tu es sûr?";
+"Are you sure?" = "Etes-vous sûr?";
 /* Cancel deletion
  left navigation button title in the crop view controller */
-"Cancel" = "Annuler";
+"Cancel" = "Cancella";
 /* Title for the alert view if the scanner cancel action fails */
 "Cancel Scanning Error" = "Annuler Erreur de balayage";
 /* Delete image */
@@ -25,8 +25,10 @@
 "Processing" = "En traitement";
 /* Title for document scanner VC */
 "Scan" = "Scanner";
+/* Title of the cropping view controller */
+"Scan Ausschnitt" = "Section de balayage";
 /* Title for the alert view if the scanner start action fails */
-"Start Scanning Error" = "Erreur d'analyse Démarrer";
+"Start Scanning Error" = "Erreur d'analyse démarrer";
 /* Document is too dark warning */
 "Too Dark" = "Trop sombre";
 /* Device is shaking too much warning */
