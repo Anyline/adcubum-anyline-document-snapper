@@ -38,7 +38,7 @@
     <string name="document_using_fast_mode">Passare alla modalità di rilevamento avanzata.</string>
     <string name="document_using_advanced_mode">Passare alla modalità di rilevamento avanzata.</string>
     <string name="document_processing_picture_header">Sarà modificato.</string>
-    <string name="document_processing_picture">Elaborazione dell'immagine... Attendere prego.</string>
+    <string name="document_processing_picture">Elaborazione dell\'immagine... Attendere prego.</string>
     <string name="document_error_shake">Non muovere</string>
     <string name="document_error_closer">Ravvicinare</string>
     <string name="document_error_format">Formato sconosciuto</string>
