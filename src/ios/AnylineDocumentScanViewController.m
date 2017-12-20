@@ -331,8 +331,8 @@ static CGFloat const kLabelHeight =                                     30;
             helpString = ALLocalizedString(@"Too Dark", @"Document is too dark warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorShakeDetected:
-            helpString = ALLocalizedString(@"Too much shaking", @"Device is shaking too much warning", self.cordovaConfig.languageKey);
-            [self resetTriggerButtonTimer];
+            //helpString = ALLocalizedString(@"Too much shaking", @"Device is shaking too much warning", self.cordovaConfig.languageKey);
+            //[self resetTriggerButtonTimer];
             break;
         default:
             break;

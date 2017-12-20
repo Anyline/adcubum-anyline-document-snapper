@@ -576,10 +576,10 @@ public class DocumentActivity extends AnylineBaseActivity implements CameraOpenL
             case IMAGE_TOO_DARK:
                 text += getString(getResources().getIdentifier("document_error_too_dark", "string", getPackageName()));
                 break;
-            case SHAKE_DETECTED:
-                text += getString(getResources().getIdentifier("document_error_shake", "string", getPackageName()));
-                restartManualButtonTimer();
-                break;
+            //case SHAKE_DETECTED:
+            //    text += getString(getResources().getIdentifier("document_error_shake", "string", getPackageName()));
+            //    restartManualButtonTimer();
+            //    break;
             case DOCUMENT_BOUNDS_OUTSIDE_OF_TOLERANCE:
                 text += getString(getResources().getIdentifier("document_error_closer", "string", getPackageName()));
                 break;
