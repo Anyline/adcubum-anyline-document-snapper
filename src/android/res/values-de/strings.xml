@@ -45,6 +45,6 @@
     <string name="document_image_saved_to">Bild gespeichert</string>
     <string name="document_processing">Processing</string>
     <string name="document_processing_picture_please_wait">Verarbeitung des Bildes... Bitte warten Sie.</string>
-    <string name="force_cancel_app">Sie sind sicher, dass Sie beenden wollen? Jeder Scan wird gelöscht!</string>
+    <string name="force_cancel_app">Sind Sie sicher, dass Sie die Aktion beenden möchten? Diese Aufnahme wird gelöscht!</string>
     <string name="confirm">Bestätigen</string>
 </resources>

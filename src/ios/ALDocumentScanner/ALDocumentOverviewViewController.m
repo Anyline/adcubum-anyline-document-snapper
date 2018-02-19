@@ -307,13 +307,13 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 - (IBAction)cancelScanning:(id)sender {
     __weak __typeof(self) weakSelf = self;
     UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
-                                                                         message:ALLocalizedString(@"Are you sure you want to exit? Every Scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"Are you sure you want to exit? This scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Continue scanning", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"No", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
     }]];
     
-    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Cancel", @"Cancel scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
+    [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Yes", @"Cancel scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
         [weakSelf dismissViewControllerAnimated:YES completion:^{
             [weakSelf.delegate documentScannerDidAbort:self];
         }];

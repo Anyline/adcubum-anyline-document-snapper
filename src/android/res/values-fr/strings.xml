@@ -45,6 +45,6 @@
     <string name="document_image_saved_to">Image enregistrée dans</string>
     <string name="document_processing">En traitement</string>
     <string name="document_processing_picture_please_wait">Traitement de l\'image. S\'il vous plaît, attendez</string>
-    <string name="force_cancel_app">Êtes-vous sûr de vouloir quitter? Chaque balayage sera supprimé!</string>
+    <string name="force_cancel_app">Êtes-vous sûr de vouloir quitter? Ce scan sera supprimé!</string>
     <string name="confirm">confirmer</string>
 </resources>
