@@ -347,7 +347,7 @@ public class OverviewActivity extends AppCompatActivity {
             mPageNumber.setVisibility(View.INVISIBLE);
             mNoItemView.setVisibility(View.VISIBLE);
         } else {
-            mPageNumber.setVisibility(View.VISIBLE);
+//            mPageNumber.setVisibility(View.VISIBLE);
             mNoItemView.setVisibility(View.GONE);
         }
         mPageNumber.setText(position + 1 + "/" + mAdapter.getCount());

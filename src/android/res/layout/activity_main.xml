@@ -28,7 +28,8 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:padding="@dimen/DEFAULT_PADDING"
-        tools:text="1/2" />
+        android:visibility="invisible"
+        tools:text="1/2"   />
 
     <io.anyline.adcubum.PagerContainer
         android:id="@+id/nY_pagerContainer"

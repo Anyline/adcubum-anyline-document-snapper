@@ -51,7 +51,7 @@
                         <constraint firstAttribute="height" constant="56" id="2bg-o3-umo"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJT-hO-GNc">
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1/2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJT-hO-GNc">
                     <rect key="frame" x="176" y="67" width="23" height="21"/>
                     <accessibility key="accessibilityConfiguration" label="pagecount label"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

@@ -35,19 +35,20 @@
             android:layout_centerVertical="true">
 
             <TextView
-                android:id="@+id/successful_scan_count"
-                style="@style/scan_count_text"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="30dp"
-                android:gravity="end"
-                android:textColor="@color/white"
-                android:textSize="10pt"
-                android:visibility="visible"
-                tools:text="0"
-                tools:visibility="visible" />
+                    android:id="@+id/successful_scan_count"
+                    style="@style/scan_count_text"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30dp"
+                    android:gravity="end"
+                    android:textColor="@color/white"
+                    android:textSize="10pt"
+                    android:visibility="invisible"
+                    tools:text="0"
+                    tools:visibility="visible" />
+
 
             <ImageView
                 android:id="@+id/cancel_scan_action"
