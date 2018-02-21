@@ -70,8 +70,8 @@
         <header-file src="src/ios/ALDocumentScanner/ALManualTriggerButton.h" target-dir="ALDocumentScanner" />
         <source-file src="src/ios/ALDocumentScanner/ALManualTriggerButton.m" target-dir="ALDocumentScanner"
         />
-        <resource-file src="src/ios/ALDocumentScanner/Icons/add_file.png" target-dir="ALDocumentScanner" />
-        <resource-file src="src/ios/ALDocumentScanner/Icons/add_file@2x.png" target-dir="ALDocumentScanner" />
+        <resource-file src="src/ios/ALDocumentScanner/Icons/ic_redo.png" target-dir="ALDocumentScanner" />
+        <resource-file src="src/ios/ALDocumentScanner/Icons/ic_redo@2x.png" target-dir="ALDocumentScanner" />
         <resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger.png" target-dir="ALDocumentScanner" />
         <resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger@2x.png" target-dir="ALDocumentScanner" />
         <resource-file src="src/ios/ALDocumentScanner/Icons/cam_trigger@3x.png" target-dir="ALDocumentScanner" />
@@ -189,6 +189,8 @@
         <resource-file src="src/android/res/drawable/ic_note_add_black_24dp.png" target="res/drawable/ic_note_add_black_24dp.png"
         />
         <resource-file src="src/android/res/drawable/ic_rotate_right_black_24dp.png" target="res/drawable/ic_rotate_right_black_24dp.png"
+        />
+        <resource-file src="src/android/res/drawable/ic_redo_black_24dp.png" target="res/drawable/ic_redo_black_24dp.png"
         />
     </platform>
 </plugin>
