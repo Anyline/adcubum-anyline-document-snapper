@@ -390,8 +390,8 @@ static CGFloat const kLabelHeight =                                     30;
 
 - (void)cancelButtonPressed:(id)sender {
         __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
-                                                                         message:ALLocalizedString(@"Are you sure you want to exit? This scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure you want to exit?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"This scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"Continue scanning", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {

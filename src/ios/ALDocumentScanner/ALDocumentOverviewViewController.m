@@ -274,7 +274,7 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
  */
 - (IBAction)deletePageAction:(id)sender {
     __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to delete an image (title)", self.cordovaConfig.languageKey)
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure you want to exit?", @"Asks the user if he wants to delete an image (title)", self.cordovaConfig.languageKey)
                                                                          message:ALLocalizedString(@"Do you really want to remove this image?", @"Asks the user if he wants to delete an image (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -306,8 +306,8 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 
 - (IBAction)cancelScanning:(id)sender {
     __weak __typeof(self) weakSelf = self;
-    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
-                                                                         message:ALLocalizedString(@"Are you sure you want to exit? This scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:ALLocalizedString(@"Are you sure you want to exit?", @"Asks the user if he wants to cancel scanning", self.cordovaConfig.languageKey)
+                                                                         message:ALLocalizedString(@"This scan will be deleted!", @"Asks the user if he wants to cancel scanning (message)", self.cordovaConfig.languageKey)
                                                                   preferredStyle:UIAlertControllerStyleActionSheet];
     
     [actionSheet addAction:[UIAlertAction actionWithTitle:ALLocalizedString(@"No", @"Continue scanning", self.cordovaConfig.languageKey) style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
