@@ -4,9 +4,13 @@
 "0 Pages" = "0 Pagine";
 /* Asks the user if he wants to delete an image (title) */
 "Are you sure?" = "Etes-vous sûr?";
+/* Are you sure you want to exit? This scan will be deleted!*/
+"Are you sure you want to exit? This scan will be deleted!" = "Êtes-vous sûr de vouloir quitter? Ce scan sera supprimé!";
 /* Cancel deletion
  left navigation button title in the crop view controller */
-"Cancel" = "Cancella";
+"Cancel" = "Annuler";
+/* Continue scanning */
+"Continue scanning" = "Continuer";
 /* Title for the alert view if the scanner cancel action fails */
 "Cancel Scanning Error" = "Annuler Erreur de balayage";
 /* Delete image */

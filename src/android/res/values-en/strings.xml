@@ -45,6 +45,6 @@
     <string name="document_image_saved_to">Image saved to</string>
     <string name="document_processing">Processing</string>
     <string name="document_processing_picture_please_wait">Processing the picture. Please wait.</string>
-    <string name="force_cancel_app">Are you sure you want to exit? Every Scan will be deleted!</string>
+    <string name="force_cancel_app">Are you sure you want to exit? This scan will be deleted!</string>
     <string name="confirm">Confirm</string>
 </resources>

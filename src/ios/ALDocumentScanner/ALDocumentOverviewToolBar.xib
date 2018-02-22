@@ -39,7 +39,7 @@
                                 <constraint firstAttribute="height" constant="30" id="IUh-5h-cHC"/>
                                 <constraint firstAttribute="width" constant="30" id="bMJ-xy-9fx"/>
                             </constraints>
-                            <state key="normal" image="add_file.png"/>
+                            <state key="normal" image="ic_redo.png"/>
                             <connections>
                                 <action selector="addNewPageToDocumentAction:" destination="-1" eventType="touchUpInside" id="8JU-El-dwo"/>
                             </connections>
@@ -128,7 +128,7 @@
         </view>
     </objects>
     <resources>
-        <image name="add_file.png" width="48" height="48"/>
+        <image name="ic_redo.png" width="48" height="48"/>
         <image name="crop.png" width="48" height="48"/>
         <image name="rotate.png" width="48" height="48"/>
     </resources>

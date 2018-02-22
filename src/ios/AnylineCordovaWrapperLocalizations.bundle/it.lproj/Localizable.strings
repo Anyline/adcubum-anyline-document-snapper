@@ -4,8 +4,8 @@
 "0 Pages" = "0 Pagine";
 /* Asks the user if he wants to delete an image (title) */
 "Are you sure?" = "Sei sicuro?";
-/* Are you sure you want to exit? Every Scan will be deleted!*/
-"Are you sure you want to exit? Every Scan will be deleted!" = "Ogni scansione sarà cancellata!";
+/* Are you sure you want to exit? This scan will be deleted!*/
+"Are you sure you want to exit? This scan will be deleted!" = "È sicuro di voler di terminare? Questa scansione sarà cancellata!";
 /* Cancel deletion
  left navigation button title in the crop view controller */
 "Cancel" = "Cancella";
