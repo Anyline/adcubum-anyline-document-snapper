@@ -45,6 +45,6 @@
     <string name="document_image_saved_to">Immagine salvata.</string>
     <string name="document_processing">Elaborazione</string>
     <string name="document_processing_picture_please_wait">Elaborazione del immagine... Attendere prego.</string>
-     <string name="force_cancel_app">È sicuro di voler di terminare? Questa scansione sarà cancellata!</string>
+    <string name="force_cancel_app">È sicuro di voler di terminare? Questa scansione sarà cancellata!</string>
     <string name="confirm">Confermare</string>
 </resources>
