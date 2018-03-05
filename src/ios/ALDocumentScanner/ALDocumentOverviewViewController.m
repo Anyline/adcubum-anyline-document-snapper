@@ -36,7 +36,8 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 
 @implementation UINavigationController (RotationAll)
 -(NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
+    //return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 @end
 
@@ -81,13 +82,12 @@ static NSString * const kPageCollectionViewCellReuseIdentifier = @"ALPageCollect
 
 
 - (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations.
-    //return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    return YES;
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Lifecycle
