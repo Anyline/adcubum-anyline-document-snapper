@@ -6,8 +6,8 @@ repositories{
 dependencies {
    	compile 'com.google.android.gms:play-services-vision:8.4.0'
     compile 'io.anyline:anylinesdk:3.10.0-adcubum@aar'
-    compile 'com.android.support:appcompat-v7:+'
-    compile "com.android.support:design:+"
+    compile 'com.android.support:appcompat-v7:26.+'
+    compile "com.android.support:design:26.+"
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.wang.avi:library:2.1.3'
 }
