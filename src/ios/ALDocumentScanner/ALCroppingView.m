@@ -130,7 +130,8 @@ typedef NS_ENUM(NSInteger, MagnifierPosition) {
         // check if position valid
         if ([self _positionIsValid:currentPosition forView:self.currentlyDraggedView] &&
             ![self _doesViewIntersectWithOtherDragableViews:self.currentlyDraggedView withProposedCenter:currentPosition] &&
-            !CGPointEqualToPoint([self _convertPoint:currentPosition fromViewToImage:self.relatedImageView], CGPointZero)) {
+            !CGPointEqualToPoint([self _convertPoint:currentPosition fromViewToImage:self.relatedImageView], CGPointZero) &&
+            (currentPosition.y > 0))  {
             self.currentlyDraggedView.center = currentPosition;
             [self setNeedsDisplay];
             
