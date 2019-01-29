@@ -46,7 +46,7 @@
     self.appKey = [command.arguments objectAtIndex:0];
     
     NSDictionary *options = [command.arguments objectAtIndex:1];
-    self.conf = [[ALUIConfiguration alloc] initWithDictionary:options bundlePath:nil];
+    self.conf = [[ALUIConfiguration alloc] initWithDictionary:options];
     
     self.cordovaUIConf = [[ALCordovaUIConfiguration alloc] initWithDictionary:options];
 }
