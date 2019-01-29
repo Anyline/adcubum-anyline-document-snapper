@@ -102,6 +102,7 @@
         <framework src="libc++.tbd" />
         <framework src="AssetsLibrary.framework" />
         <framework src="Accelerate.framework" />
+        <framework src="WebKit.framework" />
     </platform>
     <platform name="android">
         <!-- register plugin -->
