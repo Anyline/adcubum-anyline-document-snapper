@@ -42,7 +42,14 @@ static CGFloat const kLabelHeight =                                     30;
     [super viewDidLoad];
     dispatch_async(dispatch_get_main_queue(), ^{
         AnylineDocumentModuleView *docModuleView = [[AnylineDocumentModuleView alloc] initWithFrame:self.view.bounds];
+        
+        NSError *error = nil;
+        BOOL success = [docModuleView setupWithLicenseKey:self.key delegate:self error:&error];
+        
         docModuleView.currentConfiguration = self.conf;
+        [docModuleView setDocumentRatios:@[@(ALDocumentRatioDINAXPortrait)]];
+        docModuleView.maxDocumentRatioDeviation = @0.15;
+//        docModuleView.postProcessingEnabled = YES;
         self.isMultipage = self.cordovaConfig.multipageEnabled;
         self.hasManualCrop = self.cordovaConfig.manualCrop;
         
@@ -51,9 +58,6 @@ static CGFloat const kLabelHeight =                                     30;
         }
         
         self.scannedPages = [[NSMutableArray alloc] init];
-        
-        NSError *error = nil;
-        BOOL success = [docModuleView setupWithLicenseKey:self.key delegate:self error:&error];
         
         self.moduleView = docModuleView;
         
