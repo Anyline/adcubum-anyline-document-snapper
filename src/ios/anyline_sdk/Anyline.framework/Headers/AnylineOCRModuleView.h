@@ -7,30 +7,10 @@
 //
 
 #import <Anyline/Anyline.h>
-
-/**
- *  ALRange struct to define min & max charHeight for scanning.
- */
-struct ALRange {
-    NSUInteger min;
-    NSUInteger max;
-};
-typedef struct ALRange ALRange;
-
-/**
- *  Creates a range with min & max parameter
- *
- *  @param min The min value for the range
- *  @param max The max value for the range
- *
- *  @return New ALRange object with min & max values
- */
-CG_INLINE ALRange ALRangeMake(NSUInteger min, NSUInteger max) {
-    ALRange r;
-    r.min = min;
-    r.max = max;
-    return r;
-}
+#import "ALOCRResult.h"
+#import "ALOCRConfig.h"
+#import "ALOCRScanPlugin.h"
+#import "ALOCRScanViewPlugin.h"
 
 /**
  *  The possible run error codes for this module. 
@@ -62,167 +42,7 @@ typedef NS_ENUM(NSInteger, ALOCRError) {
      */
     ALOCRErrorSharpnessNotReached     = -6,
 } __deprecated_msg("Deprecated since 3.10 Use enum ALRunFailure instead.");
-/**
- *  The possible scanModes for the AnylineOCR module
- */
-typedef NS_ENUM(NSInteger, ALOCRScanMode) {
-    /**
-     *  The LINE mode is optimal for scanning one or more lines of variable length or font (like IBANs or addresses).
-     */
-    ALLine,
-    /**
-     *  The GRID mode is optimal for characters with equal size laid out in a grid
-     *  with a constant font, background and character count (like loyalty codes inside bottle caps).
-     */
-    ALGrid
-};
 
-/**
- *  A class used to configure the Anyline OCR module.
- */
-@interface ALOCRConfig : NSObject
-
-- (instancetype)initWithJsonDictionary:(NSDictionary *)configDict;
-
-/**
- *  The scan mode. 
- *  @see ALOCRScanMode
- */
-@property (nonatomic, assign) ALOCRScanMode scanMode;
-/**
- *  Property to set a custom command file (path not string) to improve scanning for your use-case.
- *  Get in touch with Anyline to receive your custum command file.
- */
-@property (nonatomic, strong) NSString *customCmdFilePath;
-/**
- *  Property to set a custom command file (string not path) to improve scanning for your use-case.
- *  Get in touch with Anyline to receive your custum command file.
- */
-@property (nonatomic, strong) NSString *customCmdFileString;
-/**
- *  Property to set the character height.
- */
-@property (nonatomic, assign) ALRange charHeight;
-/**
- *  Property to set the tesseract tessdata files as Array of Strings. ex. @[@"eng",@"deu"]
- */
-@property (nonatomic, strong) NSArray<NSString *> *tesseractLanguages;
-/**
- *  Property for the character whitelist you would like to use.
- */
-@property (nonatomic, strong) NSString *charWhiteList;
-/**
- *  Property for the validation regex.
- */
-@property (nonatomic, strong) NSString *validationRegex;
-/**
- *  The min confidence to accept the result. Between 0-100, but should normally be at least 50.
- *  The spped / accurracy of Anyline can be controlled with this property.
- */
-@property (nonatomic, assign) NSUInteger minConfidence;
-/**
- *  Removes small contours as noise.
- *
- *  This property is for Line mode only.
- *
- *  @warming Do not use activate this property when scanning for example i dots or :. 
- *           This would remove those contours.
- */
-@property (nonatomic, assign) BOOL removeSmallContours;
-/**
- * Set this to true if whitespaces should be removed within a line.
- * Also causes faster processing, because optimizations can be made if whitespaces are not relevant.
- * (only used in {@link ScanMode#LINE} mode)
- *
- * @param removeWhitespaces true if whitespaces should be removed
- */
-@property (nonatomic, assign) BOOL removeWhitespaces;
-/**
- * <p>
- * Experimental parameter to set the minimum sharpness (value between 0-100; 0 to turn sharpness detection off;
- * only used in {@link ScanMode#LINE}).
- *
- * The goal of the minimum sharpness is to avoid a time consuming ocr step,
- * if the image is blurry and good results are therefor not likely. Detecting sharpness is however difficult,
- * good values for the minimum are use case dependent.
- *
- * The detected sharpness will be reported in anylineOCRModuleView:reportsVariable:value: with identifier
- * "$sharpness" and also in error message in anylineOCRModuleView:reportsRunFailure:,
- * if the minimum sharpness is not reached (with the error code ALOCRErrorSharpnessNotReached).
- * </p><p>
- * <b>NOTE: Experimental means that this may be removed or changed in the future.</b>
- * </p>
- *
- * @since 3.4.1
- */
-@property (nonatomic, assign) NSUInteger minSharpness;
-/**
- *  The X character count
- *
- *  This property is for Grid mode only.
- */
-@property (nonatomic, assign) NSUInteger charCountX;
-/**
- *  The Y character count
- *
- *  This property is for Grid mode only.
- */
-@property (nonatomic, assign) NSUInteger charCountY;
-/**
- *  The average distance between characters in X direction,
- *  measured in percentage of character width.
- *
- *  This property is for Grid mode only.
- */
-@property (nonatomic, assign) double charPaddingXFactor;
-/**
- *  The average distance between characters in Y direction,
- *  measured in percentage of character height.
- *
- *  This property is for Grid mode only.
- */
-@property (nonatomic, assign) double charPaddingYFactor;
-/**
- *  YES to set to bright text on dark background,
- *  NO to set to dark text on bright background.
- *
- *  This property is for Grid mode only.
- */
-@property (nonatomic, assign) BOOL isBrightTextOnDark;
-
-@end
-
-/**
- *  The result object for the AnylineOCRModule
- */
-@interface ALOCRResult : ALScanResult<NSString *>
-/**
- *  The scanned text in the frame.
- *
- *  @deprecated since 3.10. Use result property instead
- */
-@property (nonatomic, strong, readonly) NSString *text __deprecated_msg("Deprecated since 3.10 Use result property instead.");
-
-/**
- *  The thresholded image where the scanned text was found
- */
-@property (nonatomic, strong, readonly) UIImage *thresholdedImage;
-
-/**
- *  @deprecated since 3.10
- */
-- (instancetype)initWithText:(NSString *)text
-                       image:(UIImage *)image
-            thresholdedImage:(UIImage *)thresholdedImage __deprecated_msg("Deprecated since 3.10 Use initWithResult:image:fullImage:confidence instead.");
-
-- (instancetype)initWithResult:(NSString *)result
-                         image:(UIImage *)image
-                     fullImage:(UIImage *)fullImage
-                    confidence:(NSInteger)confidence
-                       outline:(ALSquare *)outline
-              thresholdedImage:(UIImage *)thresholdedImage;
-
-@end
 
 @protocol AnylineOCRModuleDelegate;
 /**
@@ -233,12 +53,17 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *  @since 3.4
  */
 @interface AnylineOCRModuleView : AnylineAbstractModuleView
+
+@property (nullable, nonatomic, strong) ALOCRScanViewPlugin *ocrScanViewPlugin;
+
+@property (nullable, nonatomic, strong) ALOCRScanPlugin *ocrScanPlugin;
+
 /**
  *  Read-only property for the ALOCRConfig
  *
  *  Use method setOCRConfig:error: for setting the config.
  */
-@property (nonatomic, strong, readonly) ALOCRConfig *ocrConfig;
+@property (nullable, nonatomic, strong, readonly) ALOCRConfig *ocrConfig;
 
 /**
  *  Sets the license key and delegate.
@@ -250,10 +75,25 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)setupWithLicenseKey:(NSString *)licenseKey
-                   delegate:(id<AnylineOCRModuleDelegate>)delegate
-                  ocrConfig:(ALOCRConfig *)ocrConfig
-                      error:(NSError **)error;
+- (BOOL)setupWithLicenseKey:(NSString * _Nonnull)licenseKey
+                   delegate:(id<AnylineOCRModuleDelegate> _Nonnull)delegate
+                  ocrConfig:(ALOCRConfig * _Nonnull)ocrConfig
+                      error:(NSError * _Nullable * _Nullable )error;
+
+/**
+ *  Sets the license key and delegate. Async method with return block when done.
+ *
+ *  @param licenseKey The Anyline license key for this application bundle
+ *  @param delegate The delegate that will receive the Anyline results (hast to conform to <AnylineOCRModuleDelegate>)
+ *  @param ocrConfig    The ocrConfig to use for the scanning
+ *  @param finished Inidicating if setup is finished with an error object when setup failed.
+ *
+ */
+- (void)setupAsyncWithLicenseKey:(NSString * _Nonnull)licenseKey
+                        delegate:(id<AnylineOCRModuleDelegate> _Nonnull)delegate
+                       ocrConfig:(ALOCRConfig * _Nonnull)ocrConfig
+                        finished:(void (^_Nonnull)(BOOL success, NSError * _Nullable error))finished;
+
 /**
  *  Sets a new ALOCRConfig and returns an Error if something failed.
  *
@@ -262,7 +102,7 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)setOCRConfig:(ALOCRConfig *)ocrConfig error:(NSError **)error;
+- (BOOL)setOCRConfig:(ALOCRConfig * _Nonnull)ocrConfig error:(NSError * _Nullable * _Nullable)error;
 /**
  *  Use this method to copy a custom trained font data into the Anyline work environment.
  *  This method is mandatory if you want to use custom fonts.
@@ -273,9 +113,9 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)copyTrainedData:(NSString *)trainedDataPath
-               fileHash:(NSString *)hash
-                  error:(NSError **)error;
+- (BOOL)copyTrainedData:(NSString * _Nonnull)trainedDataPath
+               fileHash:(NSString * _Nonnull)hash
+                  error:(NSError * _Nullable * _Nullable)error;
 
 @end
 /**
@@ -291,8 +131,8 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *  @param anylineOCRModuleView The AnylineOCRModuleView
  *  @param result               The result object
  */
-- (void)anylineOCRModuleView:(AnylineOCRModuleView *)anylineOCRModuleView
-               didFindResult:(ALOCRResult *)result;
+- (void)anylineOCRModuleView:(AnylineOCRModuleView * _Nonnull)anylineOCRModuleView
+               didFindResult:(ALOCRResult * _Nonnull)result;
 
 @optional
 /**
@@ -312,9 +152,9 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @deprecated since 3.10
  */
-- (void)anylineOCRModuleView:(AnylineOCRModuleView *)anylineOCRModuleView
-             reportsVariable:(NSString *)variableName
-                       value:(id)value __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
+- (void)anylineOCRModuleView:(AnylineOCRModuleView * _Nonnull)anylineOCRModuleView
+             reportsVariable:(NSString * _Nonnull)variableName
+                       value:(id _Nonnull)value __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
 /**
  *  Is called when the processing is aborted for the current image before reaching return.
  *  (If not text is found or confidence is to low, etc.)
@@ -324,7 +164,7 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @deprecated since 3.10
  */
-- (void)anylineOCRModuleView:(AnylineOCRModuleView *)anylineOCRModuleView
+- (void)anylineOCRModuleView:(AnylineOCRModuleView * _Nonnull)anylineOCRModuleView
            reportsRunFailure:(ALOCRError)error __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
 /**
  *  Called when the outline of a possible text is detected. (currently always a rect with 4 points,
@@ -340,7 +180,7 @@ typedef NS_ENUM(NSInteger, ALOCRScanMode) {
  *
  *  @deprecated since 3.10
  */
-- (BOOL)anylineOCRModuleView:(AnylineOCRModuleView *)anylineOCRModuleView
-         textOutlineDetected:(ALSquare *)outline __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
+- (BOOL)anylineOCRModuleView:(AnylineOCRModuleView * _Nonnull)anylineOCRModuleView
+         textOutlineDetected:(ALSquare * _Nonnull)outline __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
 
 @end

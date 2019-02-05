@@ -8,138 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ALFlashButton.h"
+#import "ALTorchManager.h"
 #import "ALUIConfiguration.h"
-#import "AnylineVideoView.h"
-#import "AnylineController.h"
+#import "ALCoreController.h"
 #import "ALMotionDetector.h"
-#import "AnylineVideoView.h"
 
-/**
- * The name for a reported brightness value
- *
- * @type NSNumber holding a double
- */
-extern NSString * const kBrightnessVariableName;
+#import "ALScanResult.h"
+#import "ALScanInfo.h"
+#import "ALRunSkippedReason.h"
 
-/**
- * The name for a reported text outline value
- *
- * @type cv::Rect
- */
-extern NSString * const kOutlineVariableName;
-
-/**
- * The name for a reported device acceleration value
- *
- * @type NSNumber holding a double
- */
-extern NSString * const kDeviceAccelerationVariableName;
-
-/**
- * The name for a reported thresholded image value
- *
- * @type ALImage
- */
-extern NSString * const kThresholdedImageVariableName;
-
-/**
- * The name for a reported contour value
- *
- * @type std::vector<al::Contour>
- */
-extern NSString * const kContoursVariableName;
-
-/**
- * The name for a reported square value
- *
- * @type cv::Rect
- */
-extern NSString * const kSquareVariableName;
-
-/**
- * The name for a reported polygon value
- *
- * @type ALPolygon
- */
-extern NSString * const kPolygonVariableName;
-
-/**
- * The name for a reported sharpness value
- *
- * @type NSNumber holding a double
- */
-extern NSString * const kSharpnessVariableName;
-
-/**
- * The name for a reported shake detection warning value
- *
- * @type NSNumber holding a BOOL
- */
-extern NSString * const kShakeDetectionWarningVariableName;
-
-/**
- *  The possible run error codes for this module.
- *  You can listen to the error codes for each run via the delegate method anylineOCRModuleView:reportsRunFailure:
- */
-typedef NS_ENUM(NSInteger, ALRunFailure) {
-    /**
-     *  An unknown error occurred.
-     */
-    ALRunFailureUnkown                  = -1,
-    /**
-     *  No text lines found in imag
-     */
-    ALRunFailureNoLinesFound            = -2,
-    /**
-     *  No text found in lines
-     */
-    ALRunFailureNoTextFound             = -3,
-    /**
-     *  The required min confidence is not reached for this run
-     */
-    ALRunFailureConfidenceNotReached    = -4,
-    /**
-     *  The result does not match the validation regular expression
-     */
-    ALRunFailureResultNotValid          = -5,
-    /**
-     *  The min sharpness for this run is not reached
-     */
-    ALRunFailureSharpnessNotReached     = -6,
-};
-
-/**
- *  The base result object for all the modules
- */
-@interface ALScanResult<__covariant ObjectType> : NSObject
-/**
- *  The scanned result.
- */
-@property (nonatomic, strong, readonly) ObjectType result;
-/**
- *  The image where the scanned text was found.
- */
-@property (nonatomic, strong, readonly) UIImage *image;
-/**
- *  The full frme image where the scanned text was found.
- */
-@property (nonatomic, strong, readonly) UIImage *fullImage;
-/**
- *  The confidence for the scanned value.
- */
-@property (nonatomic, assign, readonly) NSInteger confidence;
-/**
- *  The outline of the found text in relation to the ModuleView.
- */
-@property (nonatomic, strong, readonly) ALSquare *outline;
-
-- (instancetype)initWithResult:(ObjectType)result
-                         image:(UIImage *)image
-                     fullImage:(UIImage *)fullImage
-                    confidence:(NSInteger)confidence
-                       outline:(ALSquare *)outline;
-
-@end
+#import "ALScanView.h"
+#import "ALCutoutView.h"
 
 @protocol AnylineDebugDelegate;
 
@@ -156,17 +35,25 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  */
 @interface AnylineAbstractModuleView : UIView
 
-@property (nonatomic, weak) id<AnylineDebugDelegate> debugDelegate;
+@property (nullable, nonatomic, weak) id<AnylineDebugDelegate> debugDelegate;
 
 /**
  The video view which is responsible for video preview, frame extraction, ...
  */
-@property (nonatomic, strong) AnylineVideoView *videoView;
+@property (nullable, nonatomic, strong) ALScanView *cameraView;
+
+@property (nullable, nonatomic, strong, readonly) ALCaptureDeviceManager *captureDeviceManager;
+
+@property (nullable, nonatomic, strong) ALCutoutView *cutoutView;
+
+@property (nullable, nonatomic, strong) ALFlashButton *flashButton;
+
+@property (nullable, nonatomic, strong) ALTorchManager *torchManager;
 
 /**
  * The UI Configuration for the scanning UI
  */
-@property (nonatomic, strong) ALUIConfiguration *currentConfiguration;
+@property (nullable, nonatomic, copy) ALUIConfiguration *currentConfiguration;
 
 
 /**
@@ -177,7 +64,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
 /**
  *  Sets the color of the views border
  */
-@property (nonatomic, strong) IBInspectable UIColor *strokeColor;
+@property (nullable, nonatomic, strong) IBInspectable UIColor *strokeColor;
 
 /**
  *  Sets the corner radius of the views border
@@ -187,7 +74,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
 /**
  *  Sets the color of the space surrounding the view
  */
-@property (nonatomic, strong) IBInspectable UIColor *outerColor;
+@property (nullable, nonatomic, strong) IBInspectable UIColor *outerColor;
 
 /**
  *  Sets the alpha of the space surrounding the view
@@ -197,7 +84,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
 /**
  *  Sets image the user uses to toggle the flash
  */
-@property (nonatomic, strong) IBInspectable UIImage *flashImage;
+@property (nullable, nonatomic, strong) IBInspectable UIImage *flashImage;
 
 /**
  *  Sets the alignment of the flash button. Possible values are:
@@ -258,7 +145,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  *
  *  @return Boolean indicating if the scanning could be started
  */
-- (BOOL)startScanningAndReturnError:(NSError **)error;
+- (BOOL)startScanningAndReturnError:(NSError * _Nullable * _Nullable )error;
 
 /**
  *  Stops the scanning process or sets the error object
@@ -267,7 +154,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  *
  *  @return Boolean indicating if the scanning could be stopped
  */
-- (BOOL)cancelScanningAndReturnError:(NSError **)error;
+- (BOOL)cancelScanningAndReturnError:(NSError * _Nullable * _Nullable )error;
 
 /**
  * Reporting ON Switch, off by default
@@ -286,6 +173,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  * Stop listening for device motion.
  */
 - (void)stopListeningForMotion;
+
 @end
 
 /**
@@ -309,9 +197,9 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  *  @param variableName         The variable name of the reported value
  *  @param value                The reported value
  */
-- (void)anylineModuleView:(AnylineAbstractModuleView *)anylineModuleView
-      reportDebugVariable:(NSString *)variableName
-                    value:(id)value;
+- (void)anylineModuleView:(AnylineAbstractModuleView * _Nonnull)anylineModuleView
+      reportDebugVariable:(NSString * _Nonnull)variableName
+                    value:(id _Nonnull)value;
 /**
  *  Is called when the processing is aborted for the current image before reaching return.
  *  (If not text is found or confidence is to low, etc.)
@@ -319,7 +207,7 @@ typedef NS_ENUM(NSInteger, ALRunFailure) {
  *  @param anylineModuleView The AnylineAbstractModuleView
  *  @param runFailure        The reason why the run failed
  */
-- (void)anylineModuleView:(AnylineAbstractModuleView *)anylineModuleView
+- (void)anylineModuleView:(AnylineAbstractModuleView * _Nonnull)anylineModuleView
                runSkipped:(ALRunFailure)runFailure;
 
 @end

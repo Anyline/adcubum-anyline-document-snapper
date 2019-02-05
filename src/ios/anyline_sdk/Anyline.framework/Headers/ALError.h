@@ -15,13 +15,14 @@ static NSString * const ALErrorDomain = @"ALErrorDomain";
 static NSString * const ALCameraSetupDomain = @"ALCameraSetupDomain";
 static NSString * const ALWatermarkViolationDomain = @"ALWatermarkViolationDomain";
 static NSString * const ALModuleSetupDomain = @"ALModuleSetupDomain";
+static NSString * const ALLicenseViolationDomain = @"ALLicenseViolationDomain";
 
 static NSString *const ALParserErrorLineNumber = @"ALParserErrorLineNumber";
 static NSString *const ALParserErrorLineString = @"ALParserErrorLineString";
 static NSString *const ALParserErrorParameterName =
     @"ALParserErrorParameterName";
 
-enum ALErrorCodes {
+typedef NS_ENUM(NSInteger, ALErrorCode) {
   // Anyline Exception - this type must be catched within Anyline Core
   ALOperationNotFound = 1001,
 
@@ -33,6 +34,7 @@ enum ALErrorCodes {
   // License Exception
   ALLicenseKeyInvalid = 3001,
   ALLicenseNotValidForFunction = 3002,
+  ALLicenseNotValidForFeature = 3003,
 
   ALWatermarkImageNotFound = 3003,
   ALWatermarkNotOnWindow = 3004,
@@ -74,6 +76,7 @@ enum ALErrorCodes {
   ALIntAssertionFailed = 5016,
   ALDocumentRatioOutsideOfTolerance = 5019,
   ALDocumentBoundsOutsideOfTolerance = 5020,
+  ALPointsOutOfCutout = 5021,
 
   ALOtherConditionNotMet = 5555,
 
@@ -87,9 +90,16 @@ enum ALErrorCodes {
 
   ALCameraResolutionNotSupportedByDevice = 8001,
   ALCameraAccessDenied = 8002,
+  ALFlashNotAvailable = 8003,
+  ALCameraConnectionError = 8004,
     
   ALModuleSimpleOCRConfigIsNil = 9001,
   ALModuleSimpleOCRConfigTesseractConfigIsNil = 9002,
   ALModuleSimpleOCRConfigTextHeightNotSet = 9003,
   ALBarcodeModuleNativeDelegateWrong = 9004,
+  ALEnergyScanPluginBarcodeNotSupported = 9005,
+  ALModuleSimpleOCRConfigLanguagesConfigIsNil = 9006,
 };
+
+
+#define NSLicenseViolationError(func) [NSError errorWithDomain:ALLicenseViolationDomain code:ALLicenseNotValidForFeature userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"The following feature is not avalable with your license: %@",(func)]}];

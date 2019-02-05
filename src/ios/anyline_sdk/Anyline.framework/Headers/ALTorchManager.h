@@ -12,7 +12,7 @@
 
 @interface ALTorchManager : NSObject <ALFlashButtonStatusDelegate>
 
-@property (nonatomic, weak) AVCaptureDevice * captureDevice;
+@property (nullable, nonatomic, weak) AVCaptureDevice * captureDevice;
 @property (nonatomic, assign) ALFlashStatus flashStatus;
 
 - (void)setLevelForAutoFlash:(int)brightness;
@@ -21,5 +21,9 @@
 - (void)calculateBrightnessCount:(float)brightness;
 - (void)setTorch:(BOOL)onOff;
 - (BOOL)torchAvailable;
+- (BOOL)setTorchModeOnWithLevel:(float)torchLevel
+                          error:(NSError *_Nullable *_Nullable)error;
+
+- (_Nullable instancetype)initWithCaptureDevice:(AVCaptureDevice * _Nullable)captureDevice;
 
 @end

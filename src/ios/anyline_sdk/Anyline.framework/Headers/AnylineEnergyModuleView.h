@@ -7,35 +7,10 @@
 //
 
 #import "AnylineAbstractModuleView.h"
-
-typedef NS_ENUM(NSInteger, ALScanMode) {
-    ALAnalogMeter,
-    ALElectricMeter __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead instead."), ALElectricMeter5_1 __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALElectricMeter6_1 __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALAnalogMeterWhite __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALAnalogMeter4 __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALAnalogMeter7 __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."),
-    ALGasMeter __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALGasMeter6 __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."),
-    ALBarcode,
-    ALSerialNumber,
-    ALWaterMeterBlackBackground __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."), ALWaterMeterWhiteBackground __deprecated_msg("Deprecated since 3.8. ALAnalogMeter is used instead."),
-    ALDigitalMeter,
-    ALHeatMeter4, ALHeatMeter5, ALHeatMeter6
-};
-
-/**
- *  The result object for the AnylineEnergyModule
- */
-@interface ALEnergyResult : ALScanResult<NSString *>
-/**
- * The used scanMode
- */
-@property (nonatomic, assign, readonly) ALScanMode scanMode;
-
-- (instancetype)initWithResult:(NSString *)result
-                         image:(UIImage *)image
-                     fullImage:(UIImage *)fullImage
-                    confidence:(NSInteger)confidence
-                       outline:(ALSquare *)outline
-                      scanMode:(ALScanMode)scanMode;
-
-@end
+#import "ALMeterResult.h"
+#import "ALMeterScanPlugin.h"
+#import "ALBarcodeScanPlugin.h"
+#import "ALMeterScanViewPlugin.h"
 
 @protocol AnylineEnergyModuleDelegate;
 
@@ -48,21 +23,33 @@ typedef NS_ENUM(NSInteger, ALScanMode) {
  */
 @interface AnylineEnergyModuleView : AnylineAbstractModuleView
 
+@property (nullable, nonatomic, strong) ALMeterScanViewPlugin *meterScanViewPlugin;
+
+@property (nullable, nonatomic, strong) ALMeterScanPlugin *meterScanPlugin;
+
+@property (nullable, nonatomic, strong) ALBarcodeScanPlugin *barcodeScanPlugin;
+
 /**
  *  Sets the scan mode. 
  *  It has to be ALElectricMeter, ALGasMeter, ALBarcode or ALSerialNumber
  *
  */
 @property (nonatomic, assign, readonly) ALScanMode scanMode;
-
 /**
- *  Sets the scan mode.
- *
- *  @param scanMode The scan mode to set.
- *
- *  @deprecated since 3.4
+ *  A validation regex string for the Serial scanMode.
+ *  Regex has to follow the ECMAScript standard.
+ *  This parameter will be ignored in the other scanModes.
+ *  If you want to have no regex this property has to be set to nil.
  */
-- (void)setScanMode:(ALScanMode)scanMode __deprecated_msg("Deprecated since 3.4. Use method setScanMode:error: instead.");
+@property (nonatomic, strong) NSString * _Nullable serialNumberValidationRegex;
+/**
+ *  A character whitelist for the Serial scanMode.
+ *  This parameter will be ignored in the other scanModes.
+ *  If you want to have no regex this property has to be set to nil.
+ *
+ *  @warning There are only numbers and uppercase characters allowed.
+ */
+@property (nonatomic, strong) NSString * _Nullable serialNumberCharWhitelist;
 
 /**
  *  Sets the scan mode and returns an NSError if something failed.
@@ -72,7 +59,7 @@ typedef NS_ENUM(NSInteger, ALScanMode) {
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)setScanMode:(ALScanMode)scanMode error:(NSError **)error;
+- (BOOL)setScanMode:(ALScanMode)scanMode error:(NSError * _Nullable * _Nullable)error;
 
 /**
  *  Sets the license key and delegate.
@@ -83,9 +70,21 @@ typedef NS_ENUM(NSInteger, ALScanMode) {
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)setupWithLicenseKey:(NSString *)licenseKey
-                   delegate:(id<AnylineEnergyModuleDelegate>)delegate
-                      error:(NSError **)error;
+- (BOOL)setupWithLicenseKey:(NSString * _Nonnull)licenseKey
+                   delegate:(id<AnylineEnergyModuleDelegate> _Nonnull)delegate
+                      error:(NSError * _Nullable * _Nullable )error;
+
+/**
+ *  Sets the license key and delegate. Async method with return block when done.
+ *
+ *  @param licenseKey The Anyline license key for this application bundle
+ *  @param delegate The delegate that will receive the Anyline results (hast to conform to <AnylineEnergyModuleDelegate>)
+ *  @param finished Inidicating if setup is finished with an error object when setup failed.
+ *
+ */
+- (void)setupAsyncWithLicenseKey:(NSString * _Nonnull)licenseKey
+                        delegate:(id<AnylineEnergyModuleDelegate> _Nonnull)delegate
+                        finished:(void (^_Nonnull)(BOOL success, NSError * _Nullable error))finished;
 
 @end
 
@@ -100,8 +99,8 @@ typedef NS_ENUM(NSInteger, ALScanMode) {
  *
  *  @since 3.10
  */
-- (void)anylineEnergyModuleView:(AnylineEnergyModuleView *)anylineEnergyModuleView
-                  didFindResult:(ALEnergyResult *)scanResult;
+- (void)anylineEnergyModuleView:(AnylineEnergyModuleView * _Nonnull)anylineEnergyModuleView
+                  didFindResult:(ALEnergyResult * _Nonnull)scanResult;
 @optional
 /**
  *  Returns the scanned value
@@ -114,10 +113,10 @@ typedef NS_ENUM(NSInteger, ALScanMode) {
  *
  *  @deprecated since 3.10
  */
-- (void)anylineEnergyModuleView:(AnylineEnergyModuleView *)anylineEnergyModuleView
-              didFindScanResult:(NSString *)scanResult
-                      cropImage:(UIImage *)image
-                      fullImage:(UIImage *)fullImage
+- (void)anylineEnergyModuleView:(AnylineEnergyModuleView * _Nonnull)anylineEnergyModuleView
+              didFindScanResult:(NSString * _Nonnull)scanResult
+                      cropImage:(UIImage * _Nonnull)image
+                      fullImage:(UIImage * _Nonnull)fullImage
                          inMode:(ALScanMode)scanMode __deprecated_msg("Deprecated since 3.10 Use AnylineDebugDelegate instead.");
 
 @end

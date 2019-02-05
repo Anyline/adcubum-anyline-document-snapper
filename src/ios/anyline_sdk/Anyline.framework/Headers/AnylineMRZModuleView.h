@@ -7,95 +7,8 @@
 //
 
 #import "AnylineAbstractModuleView.h"
-
-@interface ALIdentification : NSObject
-
-@property (nonatomic, strong) NSString *documentType;
-@property (nonatomic, strong) NSString *documentNumber;
-@property (nonatomic, strong) NSString *surNames;
-@property (nonatomic, strong) NSString *givenNames;
-@property (nonatomic, strong) NSString *issuingCountryCode;
-@property (nonatomic, strong) NSString *nationalityCountryCode;
-@property (nonatomic, strong) NSString *dayOfBirth;
-@property (nonatomic, strong) NSString *expirationDate;
-@property (nonatomic, strong) NSString *sex;
-@property (nonatomic, strong) NSString *checkdigitNumber;
-@property (nonatomic, strong) NSString *checkdigitExpirationDate;
-@property (nonatomic, strong) NSString *checkdigitDayOfBirth;
-@property (nonatomic, strong) NSString *checkdigitFinal;
-@property (nonatomic, strong) NSString *personalNumber;
-@property (nonatomic, strong) NSString *checkDigitPersonalNumber;
-@property (nonatomic, strong) NSString *personalNumber2;
-
-
-
-
-/**
- *  Initializes a ALIdentification object. This object is used to carry the scanned values.
- *
- *  @param documentType             The type of the document that was read. (ID/P)
- *  @param issuingCountryCode       The issuing country code of the document.
- *  @param nationalityCountryCode   The nationality country code of the document.
- *  @param surNames                 All the surNames of the person separated by whitespace.
- *  @param givenNames               All the given names of the person separated by whitespace.
- *  @param documentNumber           Passport number or document number.
- *  @param checkDigitNumber         Check digit for the document number.
- *  @param dayOfBirth               The day of birth.
- *  @param checkDigitDayOfBirth     Check digit for the day of birth.
- *  @param sex                      The gender of the person
- *  @param expirationDate           The expiration date of the passport / document.
- *  @param checkDigitExpirationDate Check digit for the expiration date.
- *  @param personalNumber           Personal Number on the document. Is nil on many passports / documents.
- *  @param checkDigitPersonalNumber CheckDigit for the personal number. Is nil or 0 when no personal number is used. 
- *                                  Is also nil on none passport documents.
- *  @param checkDigitFinal          On passports checkdigit over passport number, passport number checkdigit, date of birth,
- *                                  date of birth checkdigit, expiration date, expiration date checkdigit, personal number and
- *                                  personal number checkdigit.
- *                                  On other travel documents over document number, document number checkdigit, personal number,
- *                                  date of birth, date of birth checkdigit, expiration date and expiration date checkdigit.
- *
- *  @param personalNumber2          Optional data at the discretion of the issuing state. Only available in TD1 sized MROTDs. 
- *                                  Might contain additional information.
- *
- *  @return A new ALIdentification object
- */
-- (instancetype)initWithDocumentType:(NSString*)documentType
-                  issuingCountryCode:(NSString*)issuingCountryCode
-              nationalityCountryCode:(NSString*)nationalityCountryCode
-                            surNames:(NSString*)surNames
-                          givenNames:(NSString*)givenNames
-                      documentNumber:(NSString*)documentNumber
-                    checkDigitNumber:(NSString*)checkDigitNumber
-                          dayOfBirth:(NSString*)dayOfBirth
-                checkDigitDayOfBirth:(NSString*)checkDigitDayOfBirth
-                                 sex:(NSString*)sex
-                      expirationDate:(NSString*)expirationDate
-            checkDigitExpirationDate:(NSString*)checkdigitExpirationDate
-                      personalNumber:(NSString*)personalNumber
-            checkDigitPersonalNumber:(NSString*)checkDigitPersonalNumber
-                     checkDigitFinal:(NSString*)checkDigitFinal
-                     personalNumber2:(NSString*)personalNumber2;
-
-@end
-
-/**
- *  The result object for the AnylineMRZModule
- */
-@interface ALMRZResult : ALScanResult<ALIdentification *>
-/**
- * Boolean indicating if all the check digits where valid
- */
-@property (nonatomic, assign, readonly) BOOL allCheckDigitsValid;
-
-- (instancetype)initWithResult:(ALIdentification *)result
-                         image:(UIImage *)image
-                     fullImage:(UIImage *)fullImage
-                    confidence:(NSInteger)confidence
-                       outline:(ALSquare *)outline
-           allCheckDigitsValid:(BOOL)allCheckDigitsValid;
-
-@end
-
+#import "ALIDResult.h"
+#import "ALIDScanViewPlugin.h"
 
 @protocol AnylineMRZModuleDelegate;
 
@@ -109,6 +22,22 @@
  */
 @interface AnylineMRZModuleView : AnylineAbstractModuleView
 
+@property (nullable, nonatomic, strong) ALIDScanViewPlugin *mrzScanViewPlugin;
+
+@property (nullable, nonatomic, strong) ALIDScanPlugin *mrzScanPlugin;
+
+/**
+ *  If strictMode is enabled, results will only be returned when all checkDigits are valid.
+ *  Default strictMode = false
+ */
+@property (nonatomic) BOOL strictMode;
+
+/**
+ *  If cropAndTransformID is enabled, the detected identification document will be cropped and the image will be returned.
+ *  Default strictMode = false
+ */
+@property (nonatomic) BOOL cropAndTransformID;
+
 
 /**
  *  Sets the license key and delegate.
@@ -119,9 +48,21 @@
  *
  *  @return Boolean indicating the success / failure of the call.
  */
-- (BOOL)setupWithLicenseKey:(NSString *)licenseKey
-                   delegate:(id<AnylineMRZModuleDelegate>)delegate
-                      error:(NSError **)error;
+- (BOOL)setupWithLicenseKey:(NSString * _Nonnull)licenseKey
+                   delegate:(id<AnylineMRZModuleDelegate> _Nonnull)delegate
+                      error:(NSError * _Nullable * _Nullable )error;
+
+/**
+ *  Sets the license key and delegate. Async method with return block when done.
+ *
+ *  @param licenseKey The Anyline license key for this application bundle
+ *  @param delegate The delegate that will receive the Anyline results (hast to conform to <AnylineMRZModuleDelegate>)
+ *  @param finished Inidicating if setup is finished with an error object when setup failed.
+ *
+ */
+- (void)setupAsyncWithLicenseKey:(NSString * _Nonnull)licenseKey
+                        delegate:(id<AnylineMRZModuleDelegate> _Nonnull)delegate
+                        finished:(void (^_Nonnull)(BOOL success, NSError * _Nullable error))finished;
 
 @end
 
@@ -138,10 +79,10 @@
  *
  *  @deprecated since 3.10
  */
-- (void)anylineMRZModuleView:(AnylineMRZModuleView *)anylineMRZModuleView
-           didFindScanResult:(ALIdentification *)scanResult
+- (void)anylineMRZModuleView:(AnylineMRZModuleView * _Nonnull)anylineMRZModuleView
+           didFindScanResult:(ALIdentification * _Nonnull)scanResult
          allCheckDigitsValid:(BOOL)allCheckDigitsValid
-                     atImage:(UIImage *)image __deprecated_msg("Deprecated since 3.10. Use method anylineMRZModuleView:didFindScanResult:allCheckDigitsValid:atImage: instead.");
+                     atImage:(UIImage * _Nonnull)image __deprecated_msg("Deprecated since 3.10. Use method anylineMRZModuleView:didFindScanResult: instead.");
 
 @required
 
@@ -153,7 +94,7 @@
  *
  *  @since 3.10
  */
-- (void)anylineMRZModuleView:(AnylineMRZModuleView *)anylineMRZModuleView
-               didFindResult:(ALMRZResult *)scanResult;
+- (void)anylineMRZModuleView:(AnylineMRZModuleView * _Nonnull)anylineMRZModuleView
+               didFindResult:(ALMRZResult * _Nonnull)scanResult;
 
 @end
