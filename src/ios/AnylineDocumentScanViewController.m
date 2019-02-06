@@ -49,7 +49,7 @@ static CGFloat const kLabelHeight =                                     30;
         docModuleView.currentConfiguration = self.conf;
         [docModuleView setDocumentRatios:@[@(ALDocumentRatioDINAXPortrait)]];
         docModuleView.maxDocumentRatioDeviation = @0.15;
-//        docModuleView.postProcessingEnabled = YES;
+        docModuleView.postProcessingEnabled = YES;
         self.isMultipage = self.cordovaConfig.multipageEnabled;
         self.hasManualCrop = self.cordovaConfig.manualCrop;
         
@@ -141,7 +141,9 @@ static CGFloat const kLabelHeight =                                     30;
             [self dismissViewControllerAnimated:YES completion:NULL];
         }
     } else {
-        [self updateResultDictionaryWithPage:[[ALResultPage alloc] initWithOriginalImage:fullFrame imageCorners:corners]];
+        [self updateResultDictionaryWithPage:[[ALResultPage alloc] initWithOriginalImage:fullFrame
+                                                                        transformedImage:transformedImage
+                                                                            imageCorners:corners]];
         
         // stops scanning and schedules the scanning to restart after our timeout. in case the view disappears the debounce is cleaned up and the scanner is restarted when the view appears again
         //[self _startScanDebounce];

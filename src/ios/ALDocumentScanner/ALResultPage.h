@@ -24,7 +24,12 @@
 
 @interface ALResultPage (Private)
 
-- (nonnull instancetype)initWithOriginalImage:(nullable UIImage *)originalImage imageCorners:(nullable ALSquare *)imageCorners;
+- (nullable instancetype)initWithOriginalImage:(UIImage * _Nullable)originalImage
+                                  imageCorners:(ALSquare * _Nullable)imageCorners;
+
+- (nullable instancetype)initWithOriginalImage:(UIImage * _Nullable)originalImage
+                              transformedImage:(UIImage * _Nullable)transformedImage
+                                  imageCorners:(ALSquare * _Nullable)imageCorners;
 
 /**
  *  Rotates the page's original image by 90 degrees clockwise

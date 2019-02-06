@@ -88,9 +88,6 @@
 - (void)completeCroppingAction {
     self.page.imageCorners = [self.croppingView updatedImageCorners];
     
-    // update page's original image
-    self.page.originalImage = self.page.originalImage;
-    
     [self dismissAction];
     
     if ([self.delegate respondsToSelector:@selector(cropViewControllerDidFinishCropping:withResult:)]) {

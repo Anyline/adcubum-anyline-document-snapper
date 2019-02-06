@@ -16,50 +16,53 @@
 @interface ALResultPage ()
 @property (nonatomic, copy, nullable) NSString                                  *imageKey;
 @property (nonatomic, copy, nullable) NSString                                  *imagePath;
-@property (nonatomic, copy, nullable) NSString                                  *correctedImagePath;
+@property (nonatomic, copy, nullable) NSString                                  *ocrOptimisedImagePath;
 @end
 
 @implementation ALResultPage
 
 #pragma mark - CA
 
-
-
-- (UIImage *)originalImage {
-    NSData * data  = [NSData dataWithContentsOfFile:self.imagePath];
-    UIImage * orig = [UIImage imageWithData:data];
-    return orig;
-}
-
-- (UIImage *)ocrOptimisedImage {
-    return [self.originalImage imageByCorrectingPerspectiveWithFeatures:self.imageCorners];
-}
-
 - (void)setImageCorners:(ALRectangleFeature *)imageCorners {
     _imageCorners = imageCorners;
     
     if(self.imageKey) { // is setup complete?
-        [self _updateOCRImages];
+        self.ocrOptimisedImage = [self.originalImage imageByCorrectingPerspectiveWithFeatures:self.imageCorners];
     }
 }
 
-- (void)_updateOCRImages {
-    self.thumbnail = [self.ocrOptimisedImage imageByScalingWithFactor:0.25];
+- (void)setOcrOptimisedImage:(UIImage *)ocrOptimisedImage {
+    _ocrOptimisedImage = ocrOptimisedImage;
+    
+    self.thumbnail = [ocrOptimisedImage imageByScalingWithFactor:0.25];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths objectAtIndex:0];
 
     { // store corrected image
-        UIImage * docImage = [self.originalImage imageByCorrectingPerspectiveWithFeatures:self.imageCorners];
-        NSData *data = UIImageJPEGRepresentation(docImage, 1);
-        self.correctedImagePath = [cacheDirectory stringByAppendingFormat:@"/%@-corrected.jpg", self.imageKey];
-        [data writeToFile:self.correctedImagePath atomically:YES];
+        NSData *data = UIImageJPEGRepresentation(ocrOptimisedImage, 1);
+        self.ocrOptimisedImagePath = [cacheDirectory stringByAppendingFormat:@"/%@-corrected.jpg", self.imageKey];
+        [data writeToFile:self.ocrOptimisedImagePath atomically:YES];
     }
 }
 
 #pragma mark - Life
 
-- (instancetype)initWithOriginalImage:(UIImage *)originalImage imageCorners:(ALSquare *)imageCorners {
+- (nullable instancetype)initWithOriginalImage:(UIImage * _Nullable)originalImage
+                                  imageCorners:(ALSquare * _Nullable)imageCorners {
+    ALRectangleFeature *corners = [ALRectangleFeature new];
+    corners.topLeft = imageCorners.upLeft;
+    corners.topRight = imageCorners.upRight;
+    corners.bottomLeft = imageCorners.downLeft;
+    corners.bottomRight = imageCorners.downRight;
+    return [self initWithOriginalImage:originalImage
+                      transformedImage:[originalImage imageByCorrectingPerspectiveWithFeatures:corners]
+                          imageCorners:imageCorners];
+}
+
+- (instancetype)initWithOriginalImage:(UIImage *)originalImage
+                     transformedImage:(UIImage *)transformedImage
+                         imageCorners:(ALSquare *)imageCorners {
     if (self = [super init]) {
         // set image corners
         
@@ -70,17 +73,8 @@
         corners.bottomRight = imageCorners.downRight;
         self.imageCorners = corners;
         
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *cacheDirectory = [paths objectAtIndex:0];
-        self.imageKey = [[NSProcessInfo processInfo] globallyUniqueString];
-    
-        // store original image
-        NSData *data = UIImageJPEGRepresentation(originalImage, 1);
-        self.imagePath = [cacheDirectory stringByAppendingFormat:@"/%@.jpg", self.imageKey];
-        [data writeToFile:self.imagePath atomically:YES];
-        
-        [self _updateOriginalImage:originalImage];
-        [self _updateOCRImages];
+        self.originalImage = originalImage;
+        self.ocrOptimisedImage = transformedImage;
     }
     return self;
 }
@@ -89,11 +83,9 @@
     return self.imagePath;
 }
 
-- (NSString *)ocrOptimisedImagePath; {
-    return self.correctedImagePath;
-}
-
-- (void)_updateOriginalImage:(UIImage*)originalImage; {
+- (void)setOriginalImage:(UIImage *)originalImage {
+    _originalImage = originalImage;
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *cacheDirectory = [paths objectAtIndex:0];
     self.imageKey = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -106,8 +98,10 @@
 
 - (void)rotatePageClockwise {
     UIImage * rotatedImage = [self.originalImage imageByRotatingClockwise];
-    [self _updateOriginalImage:rotatedImage];
-    [self _updateOCRImages];
+    self.originalImage = rotatedImage;
+    
+    UIImage * rotatedOCRImage = [self.ocrOptimisedImage imageByRotatingClockwise];
+    self.ocrOptimisedImage = rotatedOCRImage;
 }
 
 @end
