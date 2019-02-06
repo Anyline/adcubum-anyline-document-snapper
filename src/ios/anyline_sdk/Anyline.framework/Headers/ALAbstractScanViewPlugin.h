@@ -79,6 +79,8 @@
 
 - (ALSquare * _Nonnull)convertCGRect:(NSValue * _Nonnull)concreteValue;
 
+- (ALSquare * _Nonnull)convertSquare:(ALSquare * _Nonnull)unconvertedSquare;
+
 - (void)updateCutoutRect:(CGRect)rect;
 
 - (void)addScanViewPluginDelegate:(id<ALScanViewPluginDelegate> _Nonnull)scanViewPluginDelegate;
