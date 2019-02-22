@@ -33,6 +33,11 @@
 @property (assign, nonatomic) CGRect cutoutRect;
 
 /**
+ The pluginID is useful if there are multiple plugins running at the same time
+ */
+@property (nullable, nonatomic, readonly) NSString *pluginID;
+
+/**
  * The UI Configuration for the scanning UI
  */
 @property (nullable, nonatomic, copy) ALScanViewPluginConfig *scanViewPluginConfig;
