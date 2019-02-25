@@ -66,7 +66,7 @@ static CGFloat const kLabelHeight =                                     30;
         [self.view sendSubviewToBack:self.moduleView];
         
         // This view notifies the user of any problems that occur while he is scanning
-        self.roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 115, self.view.bounds.size.width - 40, 30)];
+        self.roundedView = [[ALRoundedView alloc] initWithFrame:CGRectMake(20, 70, self.view.bounds.size.width - 40, 30)];
         self.roundedView.fillColor = [UIColor colorWithRed:98.0/255.0 green:39.0/255.0 blue:232.0/255.0 alpha:0.6];
         self.roundedView.textLabel.text = @"";
         self.roundedView.alpha = 0;
@@ -130,24 +130,38 @@ static CGFloat const kLabelHeight =                                     30;
                         fullImage:(UIImage *)fullFrame
                   documentCorners:(ALSquare *)corners {
     
-    if (!self.isMultipage) {
-        NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
-        NSString *imagePath = [self saveImageToFileSystem:transformedImage];
-        [dictResult setValue:imagePath forKey:[NSString stringWithFormat:@"imagePath"]];
-        
-        [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
-        
-        if (self.moduleView.cancelOnResult) {
-            [self dismissViewControllerAnimated:YES completion:NULL];
-        }
-    } else {
-        [self updateResultDictionaryWithPage:[[ALResultPage alloc] initWithOriginalImage:fullFrame
-                                                                        transformedImage:transformedImage
-                                                                            imageCorners:corners]];
-        
+    ALResultPage *scannedPage = [[ALResultPage alloc] initWithOriginalImage:fullFrame
+                                                           transformedImage:transformedImage
+                                                               imageCorners:corners];
+    
+    ALDocumentCropViewController *cropVC = [[ALDocumentCropViewController alloc] initWithPage:scannedPage cordovaConfiguration:self.cordovaConfig];
+    cropVC.delegate = self;
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:cropVC];
+    [nav.navigationBar setBarTintColor:self.navigationController.navigationBar.barTintColor];
+    [nav.navigationBar setTranslucent:self.navigationController.navigationBar.translucent];
+    
+    [self presentViewController:nav animated:YES completion:nil];
+    
+//    if (!self.isMultipage) {
+//        NSMutableDictionary *dictResult = [NSMutableDictionary dictionaryWithCapacity:4];
+//        NSString *imagePath = [self saveImageToFileSystem:transformedImage];
+//        [dictResult setValue:imagePath forKey:[NSString stringWithFormat:@"imagePath"]];
+//
+//        [self.delegate anylineBaseScanViewController:self didScan:dictResult continueScanning:!self.moduleView.cancelOnResult];
+//
+//        if (self.moduleView.cancelOnResult) {
+//            [self dismissViewControllerAnimated:YES completion:NULL];
+//        }
+//    } else {
+//        [self updateResultDictionaryWithPage:[[ALResultPage alloc] initWithOriginalImage:fullFrame
+//                                                                        transformedImage:transformedImage
+//                                                                            imageCorners:corners]];
+    
         // stops scanning and schedules the scanning to restart after our timeout. in case the view disappears the debounce is cleaned up and the scanner is restarted when the view appears again
         //[self _startScanDebounce];
-        [self onFinishScanning:nil];    }
+//        [self onFinishScanning:nil];
+    
+//   }
     
 }
 
@@ -276,8 +290,6 @@ static CGFloat const kLabelHeight =                                     30;
  */
 - (void)documentScanner:(ALDocumentOverviewViewController *)documentScannerVC didFinishScanWithResult:(ALResultDocument *)result {
     
-    
-    
     [(AnylineDocumentModuleView *) self.moduleView stopListeningForMotion];
     [(AnylineDocumentModuleView *) self.moduleView cancelScanningAndReturnError:nil];
     
@@ -328,12 +340,15 @@ static CGFloat const kLabelHeight =                                     30;
     NSString *helpString = nil;
     switch (error) {
         case ALDocumentErrorNotSharp:
+            self.roundedView.frame = CGRectMake(self.roundedView.frame.origin.x, self.roundedView.frame.origin.y, self.roundedView.frame.size.width, 60);
             helpString = ALLocalizedString(@"Document not Sharp", @"Document not sharp warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorSkewTooHigh:
+            self.roundedView.frame = CGRectMake(self.roundedView.frame.origin.x, self.roundedView.frame.origin.y, self.roundedView.frame.size.width, 30);
             helpString = ALLocalizedString(@"Wrong Perspective", @"Document has wrong perspective warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorImageTooDark:
+            self.roundedView.frame = CGRectMake(self.roundedView.frame.origin.x, self.roundedView.frame.origin.y, self.roundedView.frame.size.width, 30);
             helpString = ALLocalizedString(@"Too Dark", @"Document is too dark warning", self.cordovaConfig.languageKey);
             break;
         case ALDocumentErrorShakeDetected:
@@ -351,6 +366,8 @@ static CGFloat const kLabelHeight =                                     30;
     
     self.showingLabel = 1;
     self.roundedView.textLabel.text = helpString;
+    
+    
     
     
     // Animate the appearance of the label
